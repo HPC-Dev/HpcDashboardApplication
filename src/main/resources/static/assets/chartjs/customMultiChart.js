@@ -27,7 +27,7 @@ $('#clearButton').on('click', function() {
     cpuList.length = 0;
     runTypes.length=0;
     clearChart();
-    $("#clear").hide();
+//    $("#clear").hide();
     clearHtml();
 });
 
@@ -81,7 +81,7 @@ $('#appDrop').on("change", function() {
 
         $('#typeCheckBox').append(html);
 
-        if(isAnyChecked) {
+        if(isAnyChecked && flag ==1 ) {
             runTypeCheckBoxChange();
         }
 

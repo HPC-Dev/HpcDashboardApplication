@@ -517,7 +517,6 @@ public class ChartRestController {
           List<Double> firstResult = new ArrayList<>();
 
           List<Double> temp =null;
-
         String firstCPU = cpulist.get(0);
 
         for(Map<String, Double> e : newResList){

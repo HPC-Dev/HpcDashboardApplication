@@ -1,7 +1,22 @@
 use eda;
 
+show tables;
 
--- show tables;
+select * from app_category;
+SET SQL_SAFE_UPDATES = 0;
+
+
+select * from user;
+select * from role;
+select * from users_roles;
+
+
+#insert into users_roles (user_id,role_id) values (1,4);
+
+
+drop table app_category;
+	
+
 
 -- INSERT INTO `eda`.`hibernate_sequence`
 -- (`next_val`)
