@@ -50,7 +50,7 @@ public class ResultService {
             if(resultRepo.existsById(job)) {
                 JobDto j = util.findJobDetails(entityManager, job);
                 resultRepo.deleteById(job);
-                List<Double> list = getResultsForAverage(j.getBmName(), j.getCpu(), j.getNodes(), j.getRunType());
+                List<Double> list = getResultsForAverage(j.getAppName(),j.getBmName(), j.getCpu(), j.getNodes(), j.getRunType());
                 AppCategory appCategory = appCategoryService.getSingleCategory(j.getBmName());
                 if (list.size() > 0) {
                     double avgResult = util.calculateAverageResult(list);
@@ -99,7 +99,7 @@ public class ResultService {
         Result result = Result.builder().jobId(resultData[0]).appName(app_name).bmName(bm_name).nodes(nodes).cores(cores).nodeName(resultData[5].replaceAll("\\\\,",",")).result(util.round(Double.valueOf(resultData[6]),4)).cpu(cpu).os(os).biosVer(bios).cluster(cluster).cpuGen(cpu_generation).platform(platform).runType(run_type).user(user).build();
         resultRepo.save(result);
 
-        List<Double> list = getResultsForAverage(bm_name,cpu,nodes,run_type);
+        List<Double> list = getResultsForAverage(app_name,bm_name,cpu,nodes,run_type);
         double avgResult = util.calculateAverageResult(list);
         double perCorePerf = util.round(avgResult/cores,4);
 
@@ -163,7 +163,7 @@ public class ResultService {
 
             List<Double> list;
 
-            list = getResultsForAverage(result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes(), result.getRunType());
+            list = getResultsForAverage(result.getAppName(),result.getBmName().trim().toLowerCase(),result.getCpu().trim().toLowerCase(),result.getNodes(), result.getRunType());
 
 
             double avgResult = util.calculateAverageResult(list);
@@ -202,8 +202,8 @@ public class ResultService {
         }
     }
 
-    public List<Double> getResultsForAverage(String bm_name, String cpu, int nodes, String runType){
-        return resultRepo.findresultsByAppCPUNode(bm_name,cpu,nodes,runType);
+    public List<Double> getResultsForAverage(String app_name,String bm_name, String cpu, int nodes, String runType){
+        return resultRepo.findresultsByAppCPUNode(app_name,bm_name,cpu,nodes,runType);
     }
 
 

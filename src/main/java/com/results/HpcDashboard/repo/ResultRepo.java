@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ResultRepo extends DataTablesRepository<Result, String> {
 
-    public static final String FIND_RESULTS_APP_CPU_NODE = "SELECT result FROM results where bm_name=:bm_name and cpu=:cpu and nodes=:nodes and run_type=:runType ";
+    public static final String FIND_RESULTS_APP_CPU_NODE = "SELECT result FROM results where app_name=:app_name and bm_name=:bm_name and cpu=:cpu and nodes=:nodes and run_type=:runType ";
     public static final String GET_CPU = "select DISTINCT cpu from results ORDER BY cpu ASC";
     public static final String GET_APP = "select DISTINCT LOWER(app_name) from results ORDER BY app_name ASC;";
     public static final String GET_BM = "select DISTINCT bm_name from results ORDER BY bm_name ASC";
@@ -28,7 +28,7 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
     public static final String GET_CPU_BASED_GEN = "select DISTINCT cpu from results where cpu_gen=:cpuGen ORDER BY cpu_gen ASC;";
 
     @Query(value = FIND_RESULTS_APP_CPU_NODE, nativeQuery = true)
-    public List<Double> findresultsByAppCPUNode(String bm_name, String cpu, int nodes, String runType);
+    public List<Double> findresultsByAppCPUNode(String app_name,String bm_name, String cpu, int nodes, String runType);
 
     @Query(value = GET_CPU, nativeQuery = true)
     List<String> getCpu();

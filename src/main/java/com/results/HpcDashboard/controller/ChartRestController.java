@@ -517,11 +517,6 @@ public class ChartRestController {
           List<Double> firstResult = new ArrayList<>();
 
           List<Double> temp =null;
-//        String firstCPU = null;
-//          if(cpulist.size() >0)
-//              firstCPU = cpulist.get(0);
-//          else
-//              return multiChartResponse;
         String firstCPU = cpulist.get(0);
 
         for(Map<String, Double> e : newResList){
