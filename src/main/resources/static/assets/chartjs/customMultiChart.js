@@ -27,7 +27,7 @@ $('#clearButton').on('click', function() {
     cpuList.length = 0;
     runTypes.length=0;
     clearChart();
-    $("#clear").hide();
+//    $("#clear").hide();
     clearHtml();
 });
 
@@ -81,7 +81,7 @@ $('#appDrop').on("change", function() {
 
         $('#typeCheckBox').append(html);
 
-        if(isAnyChecked) {
+        if(isAnyChecked && flag ==1 ) {
             runTypeCheckBoxChange();
         }
 
@@ -209,6 +209,7 @@ function checkBoxChange(cpuType) {
             var app = $('#appDrop')[0].value;
             if (app && (runTypes.length > 1 && cpuList.length >= 1) || (runTypes.length >= 1 && cpuList.length > 1)) {
                 $.getJSON("/chart/multiCPUResult/" + app, $.param(params, true), function(data) {
+
                     var label = data.cpus;
                     if (data.dataset[0].value.length > 1) {
                         if (data.dataset.length > 1) {

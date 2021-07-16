@@ -4,6 +4,20 @@ use results_dashboard;
 
 show tables;
 
+select *  from uprof_raw;
+
+select * from uprof_calculated;
+
+-- drop table uprof_raw;
+-- drop table uprof_calculated;
+
+desc uprof_raw;
+
+select  core_0_utilization, core_0_eff_freq, core_0_ipc,  core_0_retired_sse_avx_flops,ccx_0_l3_miss_percent,package_0_total_mem_bw, package_0_total_mem_rd_bw, package_0_total_mem_wr_bw, package_0_approximate_xgmi_outbound_data_bytes from uprof_raw where proc_app_bm="MilanX_fluent_aw14" and run_type="latest";
+
+SET SQL_SAFE_UPDATES = 0;
+#ALTER TABLE uprof_raw AUTO_INCREMENT = 1;
+
 select DISTINCT app_name from average_result;
 
 select * from password_reset_token;
@@ -33,6 +47,8 @@ show tables;
 
 
 #drop table app_category;
+
+select * from results;
 
 
 select * from average_result where app_name= "lsdyna" and cpu_sku IN ("7742","7763") and run_type IN ("baseline","sles12sp5_300a_edc") and nodes =1 ORDER BY avg_result DESC;
@@ -149,6 +165,8 @@ select * from app_category;
 select * from user;
 select * from role;
 select * from users_roles;
+
+
 
 update role set name="ROLE_TEAM" where id=11;
 
