@@ -76,6 +76,8 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                         "/processorJson/**",
                         "/metricMapJson/**",
                         "/appMapJson/**",
+                        "/uProfResult/**",
+                        "/uProfReferenceJson/**",
                         "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

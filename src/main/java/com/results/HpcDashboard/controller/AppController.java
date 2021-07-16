@@ -1,8 +1,8 @@
 package com.results.HpcDashboard.controller;
 
 import com.results.HpcDashboard.dto.FormCommand;
-import com.results.HpcDashboard.dto.multichart.MultiChartResponse;
 import com.results.HpcDashboard.models.User;
+import com.results.HpcDashboard.repo.UProfCalculatedRepo;
 import com.results.HpcDashboard.services.*;
 import com.results.HpcDashboard.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,9 @@ public class AppController {
 
     @Autowired
     AverageResultService averageResultService;
+
+    @Autowired
+    UProfCalculatedRepo uProfCalculatedRepo;
 
     @Autowired
     Util util;
@@ -139,6 +142,17 @@ public class AppController {
         return "heatMap";
     }
 
+
+    @GetMapping("/uProfRadar")
+    public String showuProfRadar(Model model) {
+
+        List<String> cpu_list = uProfCalculatedRepo.findAllCPUs();
+        uProfCalculatedRepo.findAllCPUs();
+
+        model.addAttribute("cpus", cpu_list);
+        return "uProfRadar";
+    }
+
     @RequestMapping(value = "/cpus", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, List<String>> findAllCPUs(
@@ -163,6 +177,15 @@ public class AppController {
             @RequestParam(value = "cpu", required = true) String cpu) {
 
         return averageResultService.getRunTypesByCPU(cpu);
+    }
+
+
+    @RequestMapping(value = "/runTypesByCPUUProf", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAllrunTypesByCPUUProf(
+            @RequestParam(value = "cpu", required = true) String cpu) {
+
+        return uProfCalculatedRepo.getRunTypesByCPUUProf(cpu);
     }
 
     @RequestMapping(value = "/runTypesByAPPCPU", method = RequestMethod.GET)

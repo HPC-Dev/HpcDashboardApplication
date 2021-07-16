@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/data.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/custom.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/custom/uProfRadar.css}"/>
+    <link th:rel="icon" th:href="@{assets/favicon.ico}"/>
+    <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+
+    <title>uProf Radar</title>
+    <style>
+
+    </style>
+
+</head>
+
+<div th:insert="~{fragments/header :: header}">...</div>
+
+<br>
+
+<div class="container-fluid" style="max-width:1430px; padding:0;">
+    <div class="row">
+
+
+        <div id="cpu1" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop1" name="cpuDrop1">
+
+                <option value="" selected="true" disabled="disabled">-- CPU1 --</option>
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+
+            </select>
+        </div>
+
+
+        <div id="cpu2" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop2" name="cpuDrop2">
+
+                <option value="" selected="true" disabled="disabled">-- CPU2 --</option>
+
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+
+
+            </select>
+        </div>
+
+        <div id="cpu3" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop3" name="cpuDrop3">
+
+                <option value="" selected="true" disabled="disabled">-- CPU3 --</option>
+
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+
+
+            </select>
+        </div>
+
+        <div id="cpu4" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="cpuDrop4" name="cpuDrop4">
+
+                <option value="" selected="true" disabled="disabled">-- CPU4 --</option>
+
+                <option th:each="cpu : ${cpus}"
+                        th:value="${cpu}"
+                        th:text="${cpu}"></option>
+            </select>
+        </div>
+
+
+
+    </div>
+
+    <div class="row"  style="margin-top:20px">
+
+
+
+        <div id="type1" class="custom-control col-sm-2 dropdown custom-control-inline">
+            <select class="form-control form-control-sm" id="typeDrop1" name="typeDrop1">
+                <option value="" selected="true" disabled="disabled">-- RunType1 --</option>
+            </select>
+        </div>
+
+
+        <div id="type2" class="custom-control col-sm-2 dropdown custom-control-inline" >
+            <select class="form-control form-control-sm" id="typeDrop2" name="typeDrop2">
+                <option value="" selected="true" disabled="disabled">-- RunType2 --</option>
+            </select>
+        </div>
+
+        <div id="type3" class="custom-control col-sm-2 dropdown custom-control-inline" >
+            <select class="form-control form-control-sm" id="typeDrop3" name="typeDrop3">
+                <option value="" selected="true" disabled="disabled">-- RunType3 --</option>
+            </select>
+        </div>
+
+        <div id="type4" class="custom-control col-sm-2 dropdown custom-control-inline" >
+            <select class="form-control form-control-sm" id="typeDrop4" name="typeDrop4">
+                <option value="" selected="true" disabled="disabled">-- RunType4 --</option>
+            </select>
+        </div>
+
+    </div>
+
+        </div>
+
+<br>
+
+<div class="row">
+    <div class="col-sm-2" >
+    </div>
+
+    <div id="uProfRadar">
+        <canvas id="uProfRadarChart"></canvas>
+    </div>
+
+</div>
+
+
+
+    </div>
+
+
+</div>
+
+
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.js}"></script>
+<script type="text/javascript" th:src="@{assets/custom/uProfRadar.js}"></script>
+
+</body>
+</html>

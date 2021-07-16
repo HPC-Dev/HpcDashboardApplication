@@ -1,10 +1,11 @@
 package com.results.HpcDashboard.util;
 
 
-import com.results.HpcDashboard.dto.CPUDto;
 import com.results.HpcDashboard.dto.JobDto;
+import com.results.HpcDashboard.dto.uProf.UProfDto;
 import com.results.HpcDashboard.models.AppMap;
 import com.results.HpcDashboard.models.Processor;
+import com.results.HpcDashboard.models.UProfRaw;
 import com.results.HpcDashboard.repo.AppMapRepo;
 import com.results.HpcDashboard.repo.ProcessorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,28 +22,6 @@ import java.util.regex.Pattern;
 @Component
 public class Util {
 
-    private final String regex = "(?<!\\\\)" + Pattern.quote(",");
-    private HashMap<String,String> appMap = new HashMap<>();
-    private HashMap<String,String> metricMap = new HashMap<>();
-    private HashMap<String,String> cpuGenMap = new HashMap<>();
-
-//    public  List<CPUDto> findAllCPUs(EntityManager entityManager) {
-//        String queryStr = "select DISTINCT a.cpu_sku, b.cores from average_result a, cpu_info b where a.cpu_sku=b.cpu_sku;";
-//        try {
-//            Query query = entityManager.createNativeQuery(queryStr);
-//            List<Object[]> objectList = query.getResultList();
-//            List<CPUDto> list = new ArrayList<>();
-//            for (Object[] row : objectList) {
-//                CPUDto c = new CPUDto(row);
-//                list.add(new CPUDto(c.getCpuSku(),c.getCores()));
-//            }
-//            return list;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw e;
-//        }
-//    }
-
     @Autowired
     ProcessorRepo processorRepo;
 
@@ -51,6 +30,12 @@ public class Util {
 
     @Autowired
     Util util;
+
+    private final String regex = "(?<!\\\\)" + Pattern.quote(",");
+    private HashMap<String,String> appMap = new HashMap<>();
+    private HashMap<String,String> metricMap = new HashMap<>();
+    private HashMap<String,String> cpuGenMap = new HashMap<>();
+
 
     public JobDto findJobDetails(EntityManager entityManager, String jobId) {
         String queryStr = "select r.bm_name,r.cpu,r.nodes, r.run_type, r.cores, r.app_name from results r where r.job_id = ?1";
@@ -413,4 +398,114 @@ public class Util {
         return round(CV,2);
     }
 
+    public List<UProfRaw> generateUProfRaw(List<List<String>> finalList, String fileName,String runType) {
+
+        List<UProfRaw> returnList = new ArrayList<>();
+
+        if(runType==null || runType.equals(""))
+            runType="latest";
+
+        for(int i=1;i<finalList.size();i++)
+        {
+            UProfRaw uProfRaw = null;
+
+            uProfRaw = UProfRaw.builder().procAppBm(fileName).runType(runType).counter(i).
+                Core_0_Utilization(Double.valueOf(finalList.get(i).get(0))).
+                Core_0_Eff_Freq(Double.valueOf(finalList.get(i).get(1))).
+                Core_0_IPC(Double.valueOf(finalList.get(i).get(2))).
+                Core_0_CPI(Double.valueOf(finalList.get(i).get(3))).
+                Core_0_Branch_Misprediction_Ratio(Double.valueOf(finalList.get(i).get(4))).
+                Core_0_Retired_SSE_AVX_Flops(Double.valueOf(finalList.get(i).get(5))).
+                Core_0_Mixed_SSE_AVX_Stalls(Double.valueOf(finalList.get(i).get(6))).
+                Core_8_Utilization(Double.valueOf(finalList.get(i).get(7))).
+                Core_8_Eff_Freq(Double.valueOf(finalList.get(i).get(8))).
+                Core_8_IPC(Double.valueOf(finalList.get(i).get(9))).
+                Core_8_CPI(Double.valueOf(finalList.get(i).get(10))).
+                Core_8_Branch_Misprediction_Ratio(Double.valueOf(finalList.get(i).get(11))).
+                Core_8_Retired_SSE_AVX_Flops(Double.valueOf(finalList.get(i).get(12))).
+                Core_8_Mixed_SSE_AVX_Stalls(Double.valueOf(finalList.get(i).get(13))).
+                CCX_0_L3_Access(Double.valueOf(finalList.get(i).get(14))).
+                CCX_0_L3_Miss(Double.valueOf(finalList.get(i).get(15))).
+                CCX_0_L3_Miss_percent(Double.valueOf(finalList.get(i).get(16))).
+                CCX_0_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(17))).
+                CCX_1_L3_Access(Double.valueOf(finalList.get(i).get(18))).
+                CCX_1_L3_Miss(Double.valueOf(finalList.get(i).get(19))).
+                CCX_1_L3_Miss_percent(Double.valueOf(finalList.get(i).get(20))).
+                CCX_1_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(21))).
+                CCX_2_L3_Access(Double.valueOf(finalList.get(i).get(22))).
+                CCX_2_L3_Miss(Double.valueOf(finalList.get(i).get(23))).
+                CCX_2_L3_Miss_percent(Double.valueOf(finalList.get(i).get(24))).
+                CCX_2_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(25))).
+                CCX_3_L3_Access(Double.valueOf(finalList.get(i).get(26))).
+                CCX_3_L3_Miss(Double.valueOf(finalList.get(i).get(27))).
+                CCX_3_L3_Miss_percent(Double.valueOf(finalList.get(i).get(28))).
+                CCX_3_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(29))).
+                CCX_4_L3_Access(Double.valueOf(finalList.get(i).get(30))).
+                CCX_4_L3_Miss(Double.valueOf(finalList.get(i).get(31))).
+                CCX_4_L3_Miss_percent(Double.valueOf(finalList.get(i).get(32))).
+                CCX_4_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(33))).
+                CCX_5_L3_Access(Double.valueOf(finalList.get(i).get(34))).
+                CCX_5_L3_Miss(Double.valueOf(finalList.get(i).get(35))).
+                CCX_5_L3_Miss_percent(Double.valueOf(finalList.get(i).get(36))).
+                CCX_5_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(37))).
+                CCX_6_L3_Access(Double.valueOf(finalList.get(i).get(38))).
+                CCX_6_L3_Miss(Double.valueOf(finalList.get(i).get(39))).
+                CCX_6_L3_Miss_percent(Double.valueOf(finalList.get(i).get(40))).
+                CCX_6_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(41))).
+                CCX_7_L3_Access(Double.valueOf(finalList.get(i).get(42))).
+                CCX_7_L3_Miss(Double.valueOf(finalList.get(i).get(43))).
+                CCX_7_L3_Miss_percent(Double.valueOf(finalList.get(i).get(44))).
+                CCX_7_Ave_L3_Miss_Latency(Double.valueOf(finalList.get(i).get(45))).
+                Package_0_Total_Mem_Bw(Double.valueOf(finalList.get(i).get(46))).
+                Package_0_Total_Mem_RdBw(Double.valueOf(finalList.get(i).get(47))).
+                Package_0_Total_Mem_WrBw(Double.valueOf(finalList.get(i).get(48))).
+                Package_0_Mem_Ch_A_RdBw(Double.valueOf(finalList.get(i).get(49))).
+                Package_0_Mem_Ch_A_WrBw(Double.valueOf(finalList.get(i).get(50))).
+                Package_0_Mem_Ch_B_RdBw(Double.valueOf(finalList.get(i).get(51))).
+                Package_0_Mem_Ch_B_WrBw(Double.valueOf(finalList.get(i).get(52))).
+                Package_0_Mem_Ch_C_RdBw(Double.valueOf(finalList.get(i).get(53))).
+                Package_0_Mem_Ch_C_WrBw(Double.valueOf(finalList.get(i).get(54))).
+                Package_0_Mem_Ch_D_RdBw(Double.valueOf(finalList.get(i).get(55))).
+                Package_0_Mem_Ch_D_WrBw(Double.valueOf(finalList.get(i).get(56))).
+                Package_0_Mem_Ch_E_RdBw(Double.valueOf(finalList.get(i).get(57))).
+                Package_0_Mem_Ch_E_WrBw(Double.valueOf(finalList.get(i).get(58))).
+                Package_0_Mem_Ch_F_RdBw(Double.valueOf(finalList.get(i).get(59))).
+                Package_0_Mem_Ch_F_WrBw(Double.valueOf(finalList.get(i).get(60))).
+                Package_0_Mem_Ch_G_RdBw(Double.valueOf(finalList.get(i).get(61))).
+                Package_0_Mem_Ch_G_WrBw(Double.valueOf(finalList.get(i).get(62))).
+                Package_0_Mem_Ch_H_RdBw(Double.valueOf(finalList.get(i).get(63))).
+                Package_0_Mem_Ch_H_WrBw(Double.valueOf(finalList.get(i).get(64))).
+                Package_0_Approximate_xGMI_outbound_data_bytes(Double.valueOf(finalList.get(i).get(65))).
+                Package_0_xGMI0_BW(Double.valueOf(finalList.get(i).get(66))).
+                Package_0_xGMI1_BW(Double.valueOf(finalList.get(i).get(67))).
+                Package_0_xGMI2_BW(Double.valueOf(finalList.get(i).get(68))).
+                Package_0_xGMI3_BW(Double.valueOf(finalList.get(i).get(69)))
+                .build();
+            returnList.add(uProfRaw);
+
+        }
+        return returnList;
+    }
+
+    public double getuProfAverage(List<Double> list) {
+    double averagedValue = list.stream().mapToDouble(val -> val).average().orElse(0.0);
+    return round(averagedValue,2);
+    }
+
+    public  List<UProfDto> findAllUprofs(EntityManager entityManager, String proc_app_bm, String run_type ) {
+        String queryStr = "select  core_0_utilization, core_0_eff_freq, core_0_ipc,  core_0_retired_sse_avx_flops,ccx_0_l3_miss_percent,package_0_total_mem_bw, package_0_total_mem_rd_bw, package_0_total_mem_wr_bw, package_0_approximate_xgmi_outbound_data_bytes from uprof_raw where proc_app_bm=proc_app_bm and run_type=run_type";
+        try {
+            Query query = entityManager.createNativeQuery(queryStr);
+            List<Object[]> objectList = query.getResultList();
+            List<UProfDto> list = new ArrayList<>();
+            for (Object[] row : objectList) {
+                UProfDto u = new UProfDto(row);
+                list.add(new UProfDto(u.getCpu_Utilization(),u.getCpu_Eff_Freq(),u.getIPC(),u.getRetired_SSE_AVX_Flops(),u.getL3_Miss(),u.getTotal_Mem_Bw(),u.getTotal_Mem_RdBw(),u.getTotal_Mem_WrBw(),u.getTotal_xGMI0_BW()));
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }
