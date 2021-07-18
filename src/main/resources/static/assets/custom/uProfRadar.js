@@ -250,6 +250,7 @@ function getData() {
 
         $.getJSON("/uProfRadarChart/", $.param(params, true), function(data) {
 
+
                     if (data.dataset.length > 1) {
                            var chartdata = {
                                 labels: data.metrics,
@@ -263,7 +264,7 @@ function getData() {
                             };
 
 
-                        var chartOptions = {
+                  var chartOptions = {
 
                        legend: {
                             display: true,
@@ -279,16 +280,14 @@ function getData() {
                                      beginAtZero: true,
                                      },
                                    }],
-                           xAxes: [{
-                                  offset: true
-                                  }]
+
                         },
 
                         tooltips: {
                               callbacks: {
 
-                              title: function(tooltipItem) {
-                                  return  tooltipItem.xLabel;
+                                title: function(tooltipItem, chartdata) {
+                                    return chartdata.labels[tooltipItem[0].index];
                                 },
 
                                 label: function(tooltipItem, data) {
@@ -301,6 +300,7 @@ function getData() {
 
                         clearChart();
                         var graphTarget = $("#uProfRadarChart");
+
                         var radarGraph = new Chart(graphTarget, {
                             type: 'radar',
                             data: chartdata,
@@ -326,74 +326,5 @@ function clearChart() {
     $('#uProfRadarChart').remove();
     $('#uProfRadar').append('<canvas id="uProfRadarChart" width="450" height="300" role="img"></canvas>');
 }
-
-//    function generateChart(data)
-//    {
-//
-//    window.chartColors = {
-//      red: 'rgb(255, 99, 132)',
-//      orange: 'rgb(255, 159, 64)',
-//      yellow: 'rgb(255, 205, 86)',
-//      green: 'rgb(75, 192, 192)',
-//      blue: 'rgb(54, 162, 235)',
-//      purple: 'rgb(153, 102, 255)',
-//      grey: 'rgb(231,233,237)'
-//    };
-//
-//    window.onload = function() {
-//      window.myRadar = new Chart(document.getElementById("canvas"), config);
-//    };
-//    var colorNames = Object.keys(window.chartColors);
-//
-//
-//var label1 ="cfx_50";
-//var label2 ="aw14";
-//var label3 ="3cars";
-//
-//var color = Chart.helpers.color;
-//var config = {
-//  type: 'radar',
-//  data: {
-//    labels: [
-//      "CPU Utilization (%)", "CPU Eff Freq", "IPC (Sys + User)","Retired SSE/AVX Flops(GFLOPs)", "Tot Mem", "Tot Mem Read","Tot Mem Write", "Tot xGMI BW", "L3 Hit %"],
-//    datasets: [{
-//      label: label1,
-//      backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
-//      borderColor: window.chartColors.red,
-//      pointBackgroundColor: window.chartColors.red,
-//      data: [80,73,67,25,52,35,16,30,41],
-//    }, {
-//      label: label2,
-//      backgroundColor: color(window.chartColors.blue).alpha(0.2).rgbString(),
-//      borderColor: window.chartColors.blue,
-//      pointBackgroundColor: window.chartColors.blue,
-//      data: [92,80,84,19,43,36,7,35,41],
-//    },{
-//      label: label3,
-//      backgroundColor: color(window.chartColors.purple).alpha(0.2).rgbString(),
-//      borderColor: window.chartColors.purple,
-//      pointBackgroundColor: window.chartColors.purple,
-//      data: [99,83,85,82,28,19,9,42,80],
-//    } ]
-//  },
-//  options: {
-//    legend: {
-//      position: 'top',
-//    },
-//    title: {
-//      display: true,
-//      text: 'Chart.js Outcome Graph'
-//    },
-//    scale: {
-//      ticks: {
-//        beginAtZero: true
-//      }
-//    }
-//  }
-//};
-//}
-
-
-
 
 }

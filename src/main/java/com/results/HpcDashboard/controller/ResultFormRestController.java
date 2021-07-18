@@ -20,15 +20,6 @@ public class ResultFormRestController {
     @Autowired
     ResultService resultService;
 
-    @Autowired
-    AverageResultService averageResultService;
-
-    @Autowired
-    Util util;
-
-    @Autowired
-    ResultRepo resultRepo;
-
     @PostMapping(value = "/resultJson", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> insertResult(@RequestBody List<Result> results) {

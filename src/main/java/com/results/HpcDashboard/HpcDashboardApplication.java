@@ -30,18 +30,6 @@ import java.util.TimeZone;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class HpcDashboardApplication implements CommandLineRunner {
 
-	@Autowired
-	ApplicationRepo applicationRepo;
-
-	@Autowired
-	BenchmarkRepo benchmarkRepo;
-
-	@Autowired
-	CPURepo cpuRepo;
-
-	@Autowired
-	AverageResultService averageResultService;
-
 
 	public static void main(String[] args) {
 		SpringApplication.run(HpcDashboardApplication.class, args);
