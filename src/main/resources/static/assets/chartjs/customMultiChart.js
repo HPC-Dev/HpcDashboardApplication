@@ -292,6 +292,7 @@ function checkBoxChange(cpuType) {
                                 callbacks: {
                                      label: function(tooltipItem, data) {
                                      return data.datasets[tooltipItem.datasetIndex].label + ":  " + tooltipItem.yLabel;
+                                     }
                                 },
                                 titleMarginBottom: 10,
                                 titleFontColor: '#6e707e',
