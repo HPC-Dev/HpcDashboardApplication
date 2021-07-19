@@ -34,7 +34,12 @@ function cpuChange() {
             if (data.includes(preType)) {
                 $('#typeDrop').val(preType);
                 typeChange(preApp);
-            } else {
+            }
+             else if (data.includes('latest')) {
+                                     $('#typeDrop').val('latest');
+                                     typeChange(preApp);
+                                      }
+            else {
                 $('#typeDrop').val('');
             }
         });
@@ -48,6 +53,8 @@ function cpuChange() {
 function typeChange(preApp) {
     cpu = $('#cpuDrop')[0].value;
     type = $('#typeDrop')[0].value;
+
+
     if($("#appDrop option:selected").val())
     {
         var preApp = $("#appDrop option:selected").val();

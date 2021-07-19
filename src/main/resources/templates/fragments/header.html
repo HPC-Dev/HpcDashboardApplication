@@ -20,7 +20,9 @@
 
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/multiCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/multiCPUCharts}">Multi CPU Charts</a></li>
 
-                    <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUCharts}">Performance and Scaling</a></li>
+<!--                    <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUCharts}">Performance and Scaling</a></li>-->
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUResult' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUResult}">Performance and Scaling</a></li>
+
 
                     <li class="nav-item dropdown"  th:classappend="| ${#request.requestURI == '/reports' ? 'active':''} ${#request.requestURI == '/uProfRadar' ? 'active':''} |" >
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profiling</a>
@@ -42,7 +44,7 @@
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                             <a class="dropdown-item" href="#" th:href="@{/dashboard}">Export raw</a>
                             <a class="dropdown-item" href="#" th:href="@{/averagedResults}">Export aggregated</a>
-                            <a class="dropdown-item" href="#" th:href="@{/singleCPUResult}" >Single CPU Result </a>
+<!--                            <a class="dropdown-item" href="#" th:href="@{/singleCPUResult}" >Single CPU Result </a>-->
                             <a class="dropdown-item" href="#" th:href="@{/partComparison}">Part Comparison</a>
                             <a class="dropdown-item" href="#" th:href="@{/scalingComparison}">Scaling Comparison</a>
                         </div>

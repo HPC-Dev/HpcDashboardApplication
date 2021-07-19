@@ -1,4 +1,4 @@
-var BACKGROUND_COLORS = ['rgb(19,91,105)', 'rgb(255, 159, 64)', 'rgb(75, 192, 192)'];
+var BACKGROUND_COLORS = ['rgb(19,91,105)', 'rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(178, 102, 255)'];
 
 Chart.defaults.global.defaultFontStyle = 'bold';
 Chart.defaults.global.defaultFontFamily = 'Verdana';

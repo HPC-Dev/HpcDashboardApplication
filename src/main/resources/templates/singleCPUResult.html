@@ -19,7 +19,12 @@
 
     <title>Data</title>
     <style>
+    #ctx{
 
+  width:460px !important;
+  height:550px !important;
+
+}
     </style>
 
 </head>
@@ -31,15 +36,6 @@
 
 <div class="container-fluid" style="max-width:1400px; padding:0;">
     <div class="row" >
-<!--        <div class="col-sm-2 dropdown">-->
-<!--            <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">-->
-<!--                <option value="" selected="true" disabled="disabled">&#45;&#45; CPU &#45;&#45;</option>-->
-<!--                <option th:each="cpu : ${cpus}"-->
-<!--                        th:value="${cpu}"-->
-<!--                        th:text="${cpu}"></option>-->
-<!--            </select>-->
-<!--        </div>-->
-
 
         <div class="col-sm-2 dropdown">
             <select class="form-control form-control-sm" id="cpuDrop" name="cpuDrop">
@@ -86,6 +82,19 @@
 
 <div class="container-fluid" style="max-width:1300px; overflow-x:auto;padding:0;">
 
+
+
+<!--        <div id="noChart"  style="margin-top: 50px;margin-left: 12px">-->
+<!--            <h5>No scaling data available!</h5>-->
+<!--        </div>-->
+
+        <div id="multiChart" class="col-md-5 mt-2 mb-2" style='display:none;padding:0;'>
+            <canvas id="ctx" role="img"></canvas>
+        </div>
+
+
+
+
     <h6 style="margin:0px;display:none;" id="p1">Perf Metric</h6>
     <div class="table-responsive" id="table"></div>
 
@@ -104,8 +113,11 @@
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/1.14.3/umd/popper.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.min.js}"></script>
+<script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.js}"></script>
 <script type="text/javascript" th:src="@{assets/datatable/datatables.js}"></script>
 <script type="text/javascript" th:src="@{assets/custom/data.js}"></script>
+
 
 </body>
 </html>
