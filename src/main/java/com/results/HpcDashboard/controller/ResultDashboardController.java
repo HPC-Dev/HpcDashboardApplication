@@ -13,12 +13,15 @@ import com.results.HpcDashboard.util.GenerateExcelReport;
 import com.results.HpcDashboard.util.Util;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +29,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.*;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 public class ResultDashboardController {
@@ -261,6 +269,29 @@ public class ResultDashboardController {
         headers.add("Content-Disposition", "attachment; filename="+str);
         return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
     }
+
+    
+    @GetMapping(value = "/uProfPerfAnalyzer")
+    public ResponseEntity<Resource> uProfPerfAnalyzer() throws IOException {
+        File file = ResourceUtils.getFile("classpath:uProf/EPYC_Perf_Analyzer-uProf_v0.7.xlsm");
+
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=EPYC_Perf_Analyzer-uProf_v0.7.xlsm");
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        Path path = Paths.get(file.getAbsolutePath());
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
+        return ResponseEntity.ok()
+                .headers(header)
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel.sheet.macroEnabled.12"))
+                .body(resource);
+    }
+
+
 
     @RequestMapping(value = "/resultsCsv", method = RequestMethod.GET)
     public void csvResults(HttpServletResponse response) throws IOException {
