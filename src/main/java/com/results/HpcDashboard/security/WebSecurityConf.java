@@ -83,7 +83,7 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/dashboard", true)
+                .defaultSuccessUrl("/heatMap", true)
                 .permitAll()
                 .and()
                 .logout()
