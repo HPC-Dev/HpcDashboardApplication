@@ -1,15 +1,12 @@
 package com.results.HpcDashboard;
 
 
-import com.results.HpcDashboard.repo.ApplicationRepo;
-import com.results.HpcDashboard.repo.BenchmarkRepo;
-import com.results.HpcDashboard.repo.CPURepo;
-import com.results.HpcDashboard.services.AverageResultService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -39,6 +36,14 @@ public class HpcDashboardApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 	}
+
+
+//	@Bean
+//	ApplicationRunner applicationRunner(Environment environment)
+//	{
+//	return args ->
+//		System.out.println(environment.getProperty("workload.name"));
+//	}
 
 	@Bean
 	public Docket apiMonitoramento() {

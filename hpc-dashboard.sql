@@ -4,9 +4,21 @@ use results_dashboard;
 
 show tables;
 
+
+select * from average_result;
+
+select * from results;
+
+select * from heat_map;
+
+
 select *  from uprof_raw;
 
+select *  from uprof_reference;
+
 select * from uprof_calculated;
+
+
 
 -- drop table uprof_raw;
 -- drop table uprof_calculated;

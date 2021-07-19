@@ -51,6 +51,8 @@ public class HeatMap {
 
     int runCount;
 
+    String workload;
+
 
 
 }

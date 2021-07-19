@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class uProfController {
     AppMapRepo appMapRepo;
 
     @Autowired
-    AverageResultRestController averageResultRestController;
+    Environment environment;
 
 
     public String getLowerHigher(String app) {
@@ -180,6 +181,8 @@ public class uProfController {
 
     @GetMapping("/uProfRadarChart")
     public UProfOutput getuProfData(String[] cpuList, String[] typeList) {
+
+        System.out.println(environment.getProperty("workload.name"));
         UProfOutput uProfOutput = null;
         List<UProfCalculated> uProfCalculated = new ArrayList<>();
         List<UProfDataset> uProfDatasets = new ArrayList<>();

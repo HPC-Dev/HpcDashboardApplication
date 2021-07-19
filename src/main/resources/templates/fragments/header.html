@@ -23,18 +23,26 @@
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUCharts}">Single CPU Charts</a></li>
 
                     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                    <li class="nav-item dropdown"  th:classappend="|${#request.requestURI == '/dashboard' ? 'active':''} ${#request.requestURI == '/averagedResults' ? 'active':''} ${#request.requestURI == '/reports' ? 'active':''} ${#request.requestURI == '/singleCPUResult' ? 'active':''} ${#request.requestURI == '/partComparison' ? 'active':''} ${#request.requestURI == '/scalingComparison' ? 'active':''}|" >
+                    <li class="nav-item dropdown"  th:classappend="|${#request.requestURI == '/dashboard' ? 'active':''} ${#request.requestURI == '/averagedResults' ? 'active':''}  ${#request.requestURI == '/singleCPUResult' ? 'active':''} ${#request.requestURI == '/partComparison' ? 'active':''} ${#request.requestURI == '/scalingComparison' ? 'active':''}|" >
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Additional views</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                             <a class="dropdown-item" href="#" th:href="@{/dashboard}">Export raw</a>
                             <a class="dropdown-item" href="#" th:href="@{/averagedResults}">Export aggregated</a>
-<!--                            <a class="dropdown-item" href="#" th:href="@{/reports}">Reports</a>-->
-                            <a class="dropdown-item" href="#" th:href="@{/uProfRadar}">uProf Radar Chart</a>
                             <a class="dropdown-item" href="#" th:href="@{/singleCPUResult}" >Single CPU Result </a>
                             <a class="dropdown-item" href="#" th:href="@{/partComparison}">Part Comparison</a>
                             <a class="dropdown-item" href="#" th:href="@{/scalingComparison}">Scaling Comparison</a>
                         </div>
                     </li>
+
+
+                    <li class="nav-item dropdown"  th:classappend="| ${#request.requestURI == '/reports' ? 'active':''} ${#request.requestURI == '/uProfRadar' ? 'active':''} |" >
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profiling</a>
+                        <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
+                            <a class="dropdown-item" href="#" th:href="@{/reports}">Reports</a>
+                            <a class="dropdown-item" href="#" th:href="@{/uProfRadar}">uProf Radar Chart</a>
+                        </div>
+                    </li>
+
 
                     <li class="nav-item dropdown" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" th:classappend="|${#request.requestURI == '/application' ? 'active':''} ${#request.requestURI == '/benchmark' ? 'active':''} ${#request.requestURI == '/cpu' ? 'active':''} ${#request.requestURI == '/processorInsert' ? 'active':''} ${#request.requestURI == '/appCategoryInsert' ? 'active':''} ${#request.requestURI == '/appMetricInsert' ? 'active':''} ${#request.requestURI == '/userList' ? 'active':''}|" >
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">WIP</a>
