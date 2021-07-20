@@ -79,6 +79,9 @@ public class uProfController {
         String fileName = org.apache.commons.io.FilenameUtils.getName(file.getOriginalFilename()).split("\\.")[0];
         List<List<String>> list = new ArrayList<>();
         List<List<String>> intList = new ArrayList<>();
+        List<List<String>> intList1 = new ArrayList<>();
+        List<List<String>> intList2 = new ArrayList<>();
+        List<List<String>> intList3 = new ArrayList<>();
         List<List<String>> finalList = new ArrayList<>();
 
             try {
@@ -142,10 +145,29 @@ public class uProfController {
                     intList.add(list.get(i));
                 }
 
+                int core1 = intList.get(0).indexOf("Core_1_Utilization");
+
+                int ccx0Start = intList.get(0).indexOf("CCX_0_L3_Access");
+
+
+
                 for(int i=0; i<intList.size();i++)
                 {
-                    intList.get(i).subList(7, 56).clear();
-                    intList.get(i).subList(14,399).clear();
+
+                    intList.get(i).subList(core1, ccx0Start).clear();
+
+                    intList1.add(intList.get(i));
+                }
+
+                int ccx1End = intList.get(0).indexOf("CCX_1_Ave_L3_Miss_Latency");
+
+                int pkg0 = intList.get(0).indexOf("Package_0_Total_Mem_Bw");
+
+
+                for(int i=0; i<intList1.size();i++)
+                {
+
+                    intList1.get(i).subList(ccx1End+1,pkg0).clear();
 
                     finalList.add(intList.get(i));
                 }
@@ -187,26 +209,32 @@ public class uProfController {
         List<UProfCalculated> uProfCalculated = new ArrayList<>();
         List<UProfDataset> uProfDatasets = new ArrayList<>();
         String cpu1 = cpuList[0];
-        String cpu2 = cpuList[1];
         String type1 = typeList[0];
-        String type2 = typeList[1];
+        String cpu2 = null;
         String cpu3 = null;
         String cpu4 = null;
+        String type2 = null;
         String type3 = null;
         String type4 = null;
         UProfCalculated list1;
-        UProfCalculated list2;
+        UProfCalculated list2 = new UProfCalculated();
         UProfCalculated list3 = new UProfCalculated();
         UProfCalculated list4 = new UProfCalculated();
         Set<String> bmsList = new LinkedHashSet<>();
 
         list1 = uProfCalculatedRepo.findUProf_Calculated(cpu1,type1);
-        list2 = uProfCalculatedRepo.findUProf_Calculated(cpu2,type2);
-        uProfCalculated.add(list1);
-        uProfCalculated.add(list2);
 
+        uProfCalculated.add(list1);
         bmsList.add(list1.getProcAppBm());
-        bmsList.add(list2.getProcAppBm());
+
+
+        if (cpuList.length > 1 && typeList.length > 1) {
+            cpu2 = cpuList[1];
+            type2 = typeList[1];
+            list2 = uProfCalculatedRepo.findUProf_Calculated(cpu2,type2);
+            bmsList.add(list2.getProcAppBm());
+            uProfCalculated.add(list2);
+        }
 
         if (cpuList.length > 2 && typeList.length > 2) {
             cpu3 = cpuList[2];

@@ -242,7 +242,9 @@ function getData() {
 
     captureCPUsTypes();
 
-    if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
+//    if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
+
+if ((cpuList.length >= 1 && typeList.length >= 1 && (cpuList.length == typeList.length)) ) {
 
         var params = {};
         params.cpuList = cpuList;
@@ -251,7 +253,7 @@ function getData() {
         $.getJSON("/uProfRadarChart/", $.param(params, true), function(data) {
 
 
-                    if (data.dataset.length > 1) {
+                    if (data.dataset.length >= 1) {
                            var chartdata = {
                                 labels: data.metrics,
                                 datasets: data.dataset.map(function(dataset, index) {
