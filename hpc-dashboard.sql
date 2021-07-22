@@ -9,6 +9,8 @@ select * from average_result;
 
 select * from results;
 
+#update heat_map set workload="hpc";
+
 select * from heat_map;
 
 

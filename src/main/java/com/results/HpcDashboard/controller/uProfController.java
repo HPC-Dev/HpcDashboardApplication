@@ -80,8 +80,6 @@ public class uProfController {
         List<List<String>> list = new ArrayList<>();
         List<List<String>> intList = new ArrayList<>();
         List<List<String>> intList1 = new ArrayList<>();
-        List<List<String>> intList2 = new ArrayList<>();
-        List<List<String>> intList3 = new ArrayList<>();
         List<List<String>> finalList = new ArrayList<>();
 
             try {

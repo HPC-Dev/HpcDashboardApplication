@@ -1,6 +1,11 @@
 use eda;
 
 
+show tables;
+
+select * from eda_result;
+
+
 -- show tables;
 
 -- INSERT INTO `eda`.`hibernate_sequence`

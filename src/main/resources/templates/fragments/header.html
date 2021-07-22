@@ -40,7 +40,7 @@
                     </li>
 
                     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                    <li class="nav-item dropdown"  th:classappend="|${#request.requestURI == '/dashboard' ? 'active':''} ${#request.requestURI == '/averagedResults' ? 'active':''}  ${#request.requestURI == '/singleCPUResult' ? 'active':''} ${#request.requestURI == '/partComparison' ? 'active':''} ${#request.requestURI == '/scalingComparison' ? 'active':''}|" >
+                    <li class="nav-item dropdown"  th:classappend="|${#request.requestURI == '/dashboard' ? 'active':''} ${#request.requestURI == '/averagedResults' ? 'active':''}  ${#request.requestURI == '/partComparison' ? 'active':''} ${#request.requestURI == '/scalingComparison' ? 'active':''}|" >
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Additional views</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                             <a class="dropdown-item" href="#" th:href="@{/dashboard}">Export raw</a>
