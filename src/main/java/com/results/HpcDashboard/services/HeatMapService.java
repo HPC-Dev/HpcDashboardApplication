@@ -23,10 +23,10 @@ public class HeatMapService {
     HeatMapRepo heatMapRepo;
 
     @Transactional
-    public void updateHeatResult(String category, String isv, String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,double perfPerDollar,double perfPerWatt , int count, String runType) {
+    public void updateHeatResult(String category, String isv, String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,double perfPerDollar,double perfPerWatt , int count, String runType, String workload) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        heatMapRepo.updateHeatResult(category,isv, bm_name,cpu_sku,nodes,avg, perCorePerf,perfPerDollar,perfPerWatt, count, runType);
+        heatMapRepo.updateHeatResult(category,isv, bm_name,cpu_sku,nodes,avg, perCorePerf,perfPerDollar,perfPerWatt, count, runType, workload);
     }
 
     public List<HeatMap> getHeatMapResults(String bm_name) {
@@ -48,7 +48,7 @@ public class HeatMapService {
         HeatMap heatMap = HeatMap.builder().category(heatResult.getCategory()).cores(heatResult.getCores()).perCorePerf(heatResult.getPerCorePerf())
                 .perfPerDollar(heatResult.getPerfPerDollar()).perfPerWatt(heatResult.getPerfPerWatt()).isv(heatResult.getIsv())
                 .appName(heatResult.getAppName().trim()).avgResult(heatResult.getAvgResult()).bmName(heatResult.getBmName().trim())
-                .cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runCount(heatResult.getRunCount()).runType(heatResult.getRunType()).build();
+                .cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runCount(heatResult.getRunCount()).runType(heatResult.getRunType()).workload(heatResult.getWorkload()).build();
         heatMapRepo.save(heatMap);
     }
 

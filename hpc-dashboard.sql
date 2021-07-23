@@ -5,13 +5,22 @@ use results_dashboard;
 show tables;
 
 
+select * from results;
+
 select * from average_result;
 
-select * from results;
+select * from results where job_id ="1266a";
 
 #update heat_map set workload="hpc";
 
 select * from heat_map;
+
+-- drop table average_result;
+
+-- drop table results;
+
+-- drop table heat_map;
+
 
 
 select *  from uprof_raw;

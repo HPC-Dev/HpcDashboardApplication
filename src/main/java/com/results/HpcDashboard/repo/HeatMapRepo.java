@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HeatMapRepo extends JpaRepository<HeatMap, HeatMapId> {
 
-    public static final String UPDATE_HEAT_RESULT = "UPDATE heat_map set category=:category, isv=:isv, avg_result=:avg,per_core_perf=:perCorePerf,perf_per_dollar=:perfPerDollar,perf_per_watt=:perfPerWatt, run_count=:count where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType";
+    public static final String UPDATE_HEAT_RESULT = "UPDATE heat_map set category=:category, isv=:isv, avg_result=:avg,per_core_perf=:perCorePerf,perf_per_dollar=:perfPerDollar,perf_per_watt=:perfPerWatt, run_count=:count where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType and workload=:workload";
     public static final String DELETE_HEAT_RESULT = "DELETE FROM heat_map where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType";
     public static final String GET_HEAT_RESULT = "SELECT * from heat_map where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType";
     public static final String GET_HEAT_MAP_DATA ="select * from heat_map where cpu_sku=:cpu and run_type=:type and nodes=1 and category is not NULL";
@@ -22,7 +22,7 @@ public interface HeatMapRepo extends JpaRepository<HeatMap, HeatMapId> {
 
     @Modifying
     @Query(value = UPDATE_HEAT_RESULT, nativeQuery = true)
-    void updateHeatResult(String category, String isv, String bm_name,String cpu_sku, int nodes, double avg,double perCorePerf,double perfPerDollar,double perfPerWatt ,int count,String runType);
+    void updateHeatResult(String category, String isv, String bm_name,String cpu_sku, int nodes, double avg,double perCorePerf,double perfPerDollar,double perfPerWatt ,int count,String runType, String workload);
 
     @Modifying
     @Query(value = DELETE_HEAT_RESULT, nativeQuery = true)
