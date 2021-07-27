@@ -273,10 +273,10 @@ public class ResultDashboardController {
     
     @GetMapping(value = "/uProfPerfAnalyzer")
     public ResponseEntity<Resource> uProfPerfAnalyzer() throws IOException {
-        File file = ResourceUtils.getFile("classpath:uProf/EPYC_Perf_Analyzer-uProf_v0.7.xlsm");
+        File file = ResourceUtils.getFile("classpath:uProf/EPYC_Perf_Analyzer-uProf_v10.xlsm");
 
         HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=EPYC_Perf_Analyzer-uProf_v0.7.xlsm");
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=EPYC_Perf_Analyzer-uProf_v10.xlsm");
         header.add("Cache-Control", "no-cache, no-store, must-revalidate");
         header.add("Pragma", "no-cache");
         header.add("Expires", "0");

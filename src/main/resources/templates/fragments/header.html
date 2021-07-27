@@ -6,7 +6,7 @@
 
     <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-        <div class="container-fluid" style="max-width:1430px">
+        <div class="container-fluid" style="max-width:1500px">
             <a class="navbar-brand" href="/index"><i class="fas fa-home"></i> HPC Dashboard</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                     aria-controls="navbarResponsive"
@@ -20,21 +20,30 @@
 
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/multiCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/multiCPUCharts}">Multi CPU Charts</a></li>
 
-<!--                    <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUCharts}">Performance and Scaling</a></li>-->
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUResult' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUResult}">Performance and Scaling</a></li>
 
 
-                    <li class="nav-item dropdown"  th:classappend="| ${#request.requestURI == '/reports' ? 'active':''} ${#request.requestURI == '/uProfRadar' ? 'active':''} |" >
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profiling</a>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == 'uProfRadar' ? 'active':''}"><a class="nav-link" href="#" th:href="@{uProfRadar}">uProf Radar Chart</a></li>
+
+
+                    <li class="nav-item dropdown"  th:classappend="| ${#request.requestURI == '/reports' ? 'active':''} |" >
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profiling Reports</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
-                            <a class="dropdown-item" href="#" th:href="@{/uProfRadar}">uProf Radar Chart</a>
-                           <a class="dropdown-item" href="#" th:href="@{/reports}">Raw Profiling Reports</a>
-<!--                            <a class="dropdown-item" href="#" th:href="@{/uProfPerfAnalyzer}">Download uProf Perf Analyzer</a>-->
-                            <a class="dropdown-item" href="#" th:href="@{http://10.227.31.115/uProfPerfAnalyzer/EPYC_Perf_Analyzer-uProf_v0.7.xlsm}">Download uProf Perf Analyzer</a>
-                            <a class="dropdown-item" href="#"  onclick="return false;" > <b> AGM Radar Chart (WIP) </b></a>
-                            <a class="dropdown-item" href="#"  onclick="return false;" > <b> Multevent Radar Chart (WIP) </b></a>
-<!--                            <a class="dropdown-item" href="#" th:href="@{/agmRadar}">AGM Radar Chart (WIP)</a>-->
-<!--                            <a class="dropdown-item" href="#" th:href="@{/multeventRadar}">Multevent Radar Chart (WIP)</a>-->
+<!--                            <a class="dropdown-item" href="#" th:href="@{/reports}">Raw Profiling Reports</a>-->
+
+                            <a class="dropdown-item" href="#" th:href="@{http://10.227.31.115/AGM_Reports/}" target="_blank"> Download AGM Reports</a>
+                            <a class="dropdown-item" href="#" th:href="@{http://10.227.31.115/uProf_Reports/}" target="_blank"> Download uProf Reports</a>
+                            <a class="dropdown-item" href="#" th:href="@{http://10.227.31.115/Multevent_Reports/}" target="_blank"> Download Multevent Reports</a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <!--                            <a class="dropdown-item" href="#" th:href="@{/uProfPerfAnalyzer}">Download uProf Perf Analyzer</a>-->
+                            <a class="dropdown-item" href="#" th:href="@{http://10.227.31.115/uProfPerfAnalyzer/}" target="_blank"> Download EPYC Perf Analyzer (uProf)</a>
+
+
+<!--                            <a class="dropdown-item" href="#"  onclick="return false;" > <b> AGM Radar Chart (WIP) </b></a>-->
+<!--                            <a class="dropdown-item" href="#"  onclick="return false;" > <b> Multevent Radar Chart (WIP) </b></a>-->
+<!--                           -->
 
                         </div>
                     </li>
@@ -45,7 +54,7 @@
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                             <a class="dropdown-item" href="#" th:href="@{/dashboard}">Export raw</a>
                             <a class="dropdown-item" href="#" th:href="@{/averagedResults}">Export aggregated</a>
-<!--                            <a class="dropdown-item" href="#" th:href="@{/singleCPUResult}" >Single CPU Result </a>-->
+                            <!--                            <a class="dropdown-item" href="#" th:href="@{/singleCPUResult}" >Single CPU Result </a>-->
                             <a class="dropdown-item" href="#" th:href="@{/partComparison}">Part Comparison</a>
                             <a class="dropdown-item" href="#" th:href="@{/scalingComparison}">Scaling Comparison</a>
                         </div>
