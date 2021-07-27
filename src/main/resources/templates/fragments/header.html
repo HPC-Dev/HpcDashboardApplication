@@ -23,7 +23,7 @@
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUResult' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUResult}">Performance and Scaling</a></li>
 
 
-                    <li class="nav-item"  th:classappend="${#request.requestURI == 'uProfRadar' ? 'active':''}"><a class="nav-link" href="#" th:href="@{uProfRadar}">uProf Radar Chart</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/uProfRadar' ? 'active':''}"><a class="nav-link" href="#" th:href="@{uProfRadar}">uProf Radar Chart</a></li>
 
 
                     <li class="nav-item dropdown"  th:classappend="| ${#request.requestURI == '/reports' ? 'active':''} |" >
