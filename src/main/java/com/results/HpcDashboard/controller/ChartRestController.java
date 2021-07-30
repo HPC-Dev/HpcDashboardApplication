@@ -256,7 +256,7 @@ public class ChartRestController {
 
         list = averageResultService.getAvgResultCPUAppType(cpu, app_name,runType);
 
-        list = filterScalingList(list);
+       // list = filterScalingList(list);
 
         if (list == null || list.size() == 0 )
             return multiChartTableResponse;
