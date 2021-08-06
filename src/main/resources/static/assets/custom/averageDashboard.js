@@ -196,7 +196,7 @@ $('select#workloadDrop').change(function() {
     });
 
     filter = filter.substring(0, filter.length - 1);
-    table.column(9).search(filter).draw();
+    table.column(11).search(filter).draw();
 });
 
 $('#clearButton').on('click', function() {
