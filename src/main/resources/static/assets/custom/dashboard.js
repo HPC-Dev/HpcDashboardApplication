@@ -91,6 +91,9 @@ table = $('table#ajax').DataTable({
                 return null;
                 }
             }
+        },
+        {
+           data: 'workload'
         }
 ],
 });
@@ -241,6 +244,17 @@ function addDateFilter() {
      var endDate = $('#endDate').val();
      table.column(15).search(startDate + ',' + endDate).draw();
 }
+
+
+$('select#workloadDrop').change(function() {
+    var filter = '';
+    $('select#workloadDrop option:selected').each(function() {
+        filter += $(this).text() + "+";
+    });
+
+    filter = filter.substring(0, filter.length - 1);
+    table.column(16).search(filter).draw();
+});
 
 //$('#showButton').on('click', function(){
 //        $('#ajax').DataTable().destroy();

@@ -144,6 +144,15 @@
                                                      id="endDate" required="required"/>
             </div>
 
+            <div id="workload" class="dropdown" style="margin-top:10px">
+                <select class="form-control form-control-sm" id="workloadDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- Workload --</option>
+                    <option th:each="workload : ${workloads}"
+                            th:value="${workload}"
+                            th:text="${workload}"></option>
+                </select>
+            </div>
+
             <div class="input-group-btn" style="margin-top:8px; margin-left:52px;" >
 
                 <button class="btn btn-sm btn-info btn-rounded" id="clearButton">Clear</button>
@@ -215,6 +224,7 @@
                         <th>CPU gen</th>
                         <th>Run type</th>
                         <th>Run Date</th>
+                        <th>Workload</th>
                     </tr>
                     </thead>
                 </table>

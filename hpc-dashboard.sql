@@ -13,7 +13,7 @@ select * from results where job_id ="1266a";
 
 #update heat_map set workload="hpc";
 
-select * from heat_map;
+select * from heat_map where run_type="latest_aocl";
 
 -- drop table average_result;
 

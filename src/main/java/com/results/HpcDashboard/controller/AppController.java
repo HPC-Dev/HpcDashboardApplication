@@ -16,6 +16,10 @@ import java.util.*;
 @Controller
 public class AppController {
 
+
+    @Autowired
+    ResultService resultService;
+
     @Autowired
     UserService userService;
 
@@ -66,8 +70,12 @@ public class AppController {
     public String showMultiChartsNew(Model model) {
         List<String> app_list = averageResultService.getApp();
         List<String> cpu_list = averageResultService.getCpu();
+        List<String> workload_list = resultService.getWorkload();
+
         model.addAttribute("cpus", cpu_list );
         model.addAttribute("apps", app_list );
+        model.addAttribute("workloads", workload_list);
+
         return "multiCPUCharts";
     }
 
@@ -170,6 +178,14 @@ public class AppController {
 
         return averageResultService.getRunTypes(appName);
     }
+
+    @RequestMapping(value = "/workloads", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findWorkloads() {
+
+        return resultService.getWorkload();
+    }
+
 
     @RequestMapping(value = "/runTypesByCPU", method = RequestMethod.GET)
     public @ResponseBody

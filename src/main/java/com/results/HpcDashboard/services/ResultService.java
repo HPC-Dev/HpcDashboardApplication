@@ -342,6 +342,18 @@ public class ResultService {
             return Collections.EMPTY_LIST;
         }
         return run_type;
+
+    }
+
+    public List<String> getWorkload() {
+
+        List<String> workload = null;
+        workload = resultRepo.getWorkload();
+
+        if(workload ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return workload;
     }
 
 }

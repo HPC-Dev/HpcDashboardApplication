@@ -96,6 +96,15 @@
                 </select>
             </div>
 
+            <div id="workload" class="dropdown" style="margin-top:10px">
+                <select class="form-control form-control-sm" id="workloadDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- Workload --</option>
+                    <option th:each="workload : ${workloads}"
+                            th:value="${workload}"
+                            th:text="${workload}"></option>
+                </select>
+            </div>
+
 
             <div class="input-group-btn" style="margin-top:8px; margin-left:52px;" >
 
@@ -118,11 +127,10 @@
                         <th>Cores</th>
                         <th>Avg result</th>
                         <th>Perf per core</th>
-<!--                        <th>Perf per dollar</th>-->
-<!--                        <th>Perf per watt</th>-->
                         <th>Variance</th>
                         <th>Run count</th>
                         <th>Run type</th>
+                        <th>Workload</th>
                     </tr>
                     </thead>
                 </table>

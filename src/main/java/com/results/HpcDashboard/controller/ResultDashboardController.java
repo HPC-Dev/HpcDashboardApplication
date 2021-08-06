@@ -181,6 +181,8 @@ public class ResultDashboardController {
         List<String> platform_list = resultService.getPlatform();
         List<String> cpu_gen_list = resultService.getCpuGen();
         List<String> run_type_list = resultService.getRunType();
+        List<String> workload_list = resultService.getWorkload();
+
 
         model.addAttribute("cpus", cpu_list);
         model.addAttribute("apps", app_list);
@@ -193,6 +195,7 @@ public class ResultDashboardController {
         model.addAttribute("platforms", platform_list);
         model.addAttribute("cpugens", cpu_gen_list);
         model.addAttribute("runtypes", run_type_list);
+        model.addAttribute("workloads", workload_list);
 
         return "resultDashboard";
     }
@@ -208,6 +211,8 @@ public class ResultDashboardController {
         List<Integer> node_list = resultService.getNodes();
         List<String> run_type_list = resultService.getRunType();
         List<Integer> run_count_list = averageResultService.getRunCount();
+        List<String> workload_list = resultService.getWorkload();
+
 
         model.addAttribute("cpus", cpu_list);
         model.addAttribute("cpugens", cpu_gen_list);
@@ -216,7 +221,7 @@ public class ResultDashboardController {
         model.addAttribute("bms", bm_list);
         model.addAttribute("runtypes", run_type_list);
         model.addAttribute("runCounts", run_count_list);
-
+        model.addAttribute("workloads", workload_list);
 
         return "resultAverage";
     }

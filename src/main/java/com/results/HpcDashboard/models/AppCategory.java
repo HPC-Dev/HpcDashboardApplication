@@ -35,5 +35,8 @@ public class AppCategory {
     @Id
     @JsonAlias({"Benchmark"})
     String bmName;
+
+    @JsonAlias({"Workload"})
+    String workload;
 }
 

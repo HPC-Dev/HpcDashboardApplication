@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface AverageResultRepo extends DataTablesRepository<AverageResult, AverageResultId> {
 
-    public static final String UPDATE_AVG_RESULT = "UPDATE average_result set avg_result=:avg,per_core_perf=:perCorePerf,perf_per_dollar=:perfPerDollar,perf_per_watt=:perfPerWatt, coefficient_of_variation=:cv, run_count=:count where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType and workload=:workload";
+    public static final String UPDATE_AVG_RESULT = "UPDATE average_result set avg_result=:avg,per_core_perf=:perCorePerf,perf_per_dollar=:perfPerDollar,perf_per_watt=:perfPerWatt, coefficient_of_variation=:cv, run_count=:count, workload=:workload where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType";
     public static final String DELETE_AVG_RESULT = "DELETE FROM average_result where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType";
     public static final String GET_AVG_RESULT = "SELECT * from average_result where bm_name=:bm_name and cpu_sku =:cpu_sku and nodes=:nodes and run_type=:runType";
     public static final String GET_AVG_RESULT_CPU_APP = "SELECT * from average_result where cpu_sku =:cpu_sku and app_name =:app_name ORDER BY bm_name";

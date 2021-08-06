@@ -57,7 +57,7 @@ public class HpcDashboardApplication implements CommandLineRunner {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("HPC Dashboard Controller")
+				.title("EPYC Dashboard Controller")
 				.description("")
 				.build();
 	}

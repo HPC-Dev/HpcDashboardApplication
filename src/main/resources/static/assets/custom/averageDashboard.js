@@ -88,6 +88,10 @@ function dataTable() {
             {
                 data: 'runType'
             }
+            ,
+            {
+                data: 'workload'
+            }
         ],
     });
 
@@ -185,7 +189,15 @@ $('select#runCountDrop').change(function() {
     table.column(8).search(filter).draw();
 });
 
+$('select#workloadDrop').change(function() {
+    var filter = '';
+    $('select#workloadDrop option:selected').each(function() {
+        filter += $(this).text() + "+";
+    });
 
+    filter = filter.substring(0, filter.length - 1);
+    table.column(9).search(filter).draw();
+});
 
 $('#clearButton').on('click', function() {
 

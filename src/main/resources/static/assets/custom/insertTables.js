@@ -20,7 +20,7 @@ function getData() {
 
   $.getJSON("/helper/appCategory/", function(data) {
 
-        var columnNames = ['category', 'isv',  'appName', 'bmName'];
+        var columnNames = ['category', 'isv',  'appName', 'bmName', 'workload'];
         updateTableCategory(columnNames, data);
     });
 

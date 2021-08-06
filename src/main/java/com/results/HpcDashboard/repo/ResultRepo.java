@@ -25,6 +25,7 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
     public static final String GET_PLATFORM = "select DISTINCT LOWER(platform) from results ORDER BY platform ASC";
     public static final String GET_CPU_GEN = "select DISTINCT LOWER(cpu_gen) from results ORDER BY cpu_gen ASC";
     public static final String GET_RUN_TYPE = "select DISTINCT LOWER(run_type) from results ORDER BY run_type ASC";
+    public static final String GET_WORKLOAD = "select DISTINCT LOWER(workload) from results ORDER BY workload ASC";
     public static final String GET_CPU_BASED_GEN = "select DISTINCT cpu from results where cpu_gen=:cpuGen ORDER BY cpu_gen ASC;";
 
     @Query(value = FIND_RESULTS_APP_CPU_NODE, nativeQuery = true)
@@ -62,6 +63,9 @@ public interface ResultRepo extends DataTablesRepository<Result, String> {
 
     @Query(value = GET_RUN_TYPE, nativeQuery = true)
     List<String> getRunType();
+
+    @Query(value = GET_WORKLOAD, nativeQuery = true)
+    List<String> getWorkload();
 
     @Query(value = GET_CPU_BASED_GEN, nativeQuery = true)
     List<String> getCPUGen(String cpuGen);
