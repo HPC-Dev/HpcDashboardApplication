@@ -89,13 +89,13 @@ public class Result implements Serializable {
     private String setting;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-    @CsvBindByPosition(position = 15)
+    //@CsvBindByPosition(position = 15)
     @Basic
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStamp;
 
     @JsonAlias({"workload"})
-    @CsvBindByPosition(position = 16)
+    @CsvBindByPosition(position = 15)
     String workload;
 
 
