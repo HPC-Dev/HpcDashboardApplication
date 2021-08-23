@@ -68,30 +68,31 @@ public class ResultDashboardController {
             @ModelAttribute("command") @Valid FormCommand command,
             Model model, @RequestParam("file") MultipartFile file, Errors errors, RedirectAttributes redirectAttributes) {
 
-        if(command.getRadioButtonSelectedValue().equals("paste")) {
-            String[] resultReturned = command.getTextareaField().split("!");
-            for (String individualResult : resultReturned) {
-
-                String[] resultData = individualResult.split(",");
-
-                if (resultData.length > 16 && individualResult.contains("[")) {
-                    resultData = util.performRegex(individualResult);
-                }
-
-                if (resultData.length != 16) {
-                    redirectAttributes.addFlashAttribute("failure", "Please provide date in the below format (Job Id, App_Name, Benchmark, Nodes, Cores, node_name, Result, CPU, OS, BIOS, Cluster, User, Platform, cpu_generation, Run_type, Workload)");
-                    return "redirect:/result";
-                }
-                try {
-                    resultService.insertResult(resultData);
-                }
-                catch (Exception e){
-                    redirectAttributes.addFlashAttribute("failMessage", ExceptionUtils.getRootCauseMessage(e));
-                    return "redirect:/result";
-                }
-            }
-        }
-        else if(command.getRadioButtonSelectedValue().equals("upload")){
+//        if(command.getRadioButtonSelectedValue().equals("paste")) {
+//            String[] resultReturned = command.getTextareaField().split("!");
+//            for (String individualResult : resultReturned) {
+//
+//                String[] resultData = individualResult.split(",");
+//
+//                if (resultData.length > 16 && individualResult.contains("[")) {
+//                    resultData = util.performRegex(individualResult);
+//                }
+//
+//                if (resultData.length != 16) {
+//                    redirectAttributes.addFlashAttribute("failure", "Please provide date in the below format (Job Id, App_Name, Benchmark, Nodes, Cores, node_name, Result, CPU, OS, BIOS, Cluster, User, Platform, cpu_generation, Run_type, Workload)");
+//                    return "redirect:/result";
+//                }
+//                try {
+//                    resultService.insertResult(resultData);
+//                }
+//                catch (Exception e){
+//                    redirectAttributes.addFlashAttribute("failMessage", ExceptionUtils.getRootCauseMessage(e));
+//                    return "redirect:/result";
+//                }
+//            }
+//        }
+//        else
+            if(command.getRadioButtonSelectedValue().equals("upload")){
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("fileNotUploaded", "Please upload a file");
                 return "redirect:/result";
@@ -204,6 +205,7 @@ public class ResultDashboardController {
     @GetMapping("/averagedResults")
     public String showAverageDashboard(Model model) {
 
+        List<String> segments = averageResultService.getSegments();
         List<String> cpu_gen_list = resultService.getCpuGen();
         List<String> cpu_list = resultService.getCpu();
         List<String> app_list = resultService.getApp();
@@ -214,6 +216,7 @@ public class ResultDashboardController {
         List<String> workload_list = resultService.getWorkload();
 
 
+        model.addAttribute("segments",segments);
         model.addAttribute("cpus", cpu_list);
         model.addAttribute("cpugens", cpu_gen_list);
         model.addAttribute("apps", app_list);

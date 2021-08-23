@@ -10,18 +10,132 @@ function clearChart() {
 $("#multiChart").hide();
     $('#ctx').remove();
     $('#multiChart').append('<canvas id="ctx" width="450" height="300" role="img"></canvas>');
+}
 
+function clearHtml(){
+
+$("#p1").hide();
+     $("#p2").hide();
+     $("#p3").hide();
+     $("#p4").hide();
+    $('#typeDrop').val('');
+    $('#appDrop').val('');
+    $('#table').html('');
+    $('#tableScaling').html('');
+    $('#tableCV').html('');
+    $('#tableCount').html('');
 }
 
 
 var cpus = []
 var typeVal;
+var workloads = [];
 var flag;
+
 $('#typeDrop').change(typeChange);
+$("#cpuDrop").on("change",  cpuChange);
 $("#app").on("change", getData);
 $("#app").on("change", getScalingChart);
 
-$('#cpuDrop').on("change", function() {
+
+window.onload = function() {
+
+    $.getJSON("/workloads", {
+        ajax: 'true'
+    }, function(data) {
+        var len = data.length;
+
+        if (len > 1) {
+
+            $("#workloadCheckBox").show();
+        } else {
+
+            $("#workloadCheckBox").hide();
+        }
+        var html = '';
+
+        for (var i = 0; i < len; i++) {
+
+            html += ' <div id="workloadCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="workloadCheckBoxChange(\'' + data[i] + '\')" />' +
+                '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
+
+
+            html += '</div>';
+        }
+        $('#workloadCheckBox').append(html);
+
+    });
+
+    cpuDropDownLoad();
+
+};
+
+
+function workloadCheckBoxChange(workload) {
+
+    if (workload) {
+
+        var index = workloads.indexOf(workload);
+        if (index > -1) {
+            workloads.splice(index, 1);
+        } else {
+            workloads.push(workload);
+        }
+    }
+
+    cpuDropDownLoad();
+}
+
+
+
+function cpuDropDownLoad() {
+
+    var params = {};
+    params.workloads = workloads;
+    var preCpu = $("#cpuDrop option:selected").val();
+
+    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+
+        var html = '<option value="" selected="true" disabled="disabled">-- CPU --</option>';
+
+        for (var cpuGen in data) {
+
+            html += '<optgroup label="' + cpuGen + '">'
+
+            for (var cpu in data[cpuGen]) {
+                html += '<option value="' + data[cpuGen][cpu] + '">' +
+                    data[cpuGen][cpu] + '</option>';
+            }
+
+            html += '</optgroup>'
+        }
+
+        $('#cpuDrop').html(html);
+
+        var cpuFlag =0;
+        for (var cpuGen in data) {
+            if (data[cpuGen].includes(preCpu)) {
+                $('#cpuDrop').val(preCpu);
+                cpuChange();
+                cpuFlag =1;
+                break;
+            }
+
+        }
+
+        if(cpuFlag == 0) {
+                $('#cpuDrop').val('');
+                clearHtml();
+                clearChart();
+         }
+
+    });
+   }
+
+
+function  cpuChange() {
     cpu = $('#cpuDrop')[0].value;
     var preType = $("#typeDrop option:selected").val();
     var preApp = $("#appDrop option:selected").val();
@@ -63,18 +177,10 @@ $('#cpuDrop').on("change", function() {
     }
 
     clearChart();
-     $("#p1").hide();
-     $("#p2").hide();
-     $("#p3").hide();
-     $("#p4").hide();
-    $('#typeDrop').val('');
-    $('#appDrop').val('');
-    $('#table').html('');
-    $('#tableScaling').html('');
-    $('#tableCV').html('');
-    $('#tableCount').html('');
+    clearHtml();
 
-});
+}
+
 
 function typeChange(preApp) {
 
@@ -160,8 +266,6 @@ $.getJSON("/chart/resultBm/" + cpu + "/" + app + "/" + runType, function(data) {
 
             var label = data.labels;
             var result = dataPoints;
-
-            console.log(cpu);
 
             if (result.length > 0) {
                 $("#multiChart").show();

@@ -32,6 +32,8 @@ public class AverageResult implements Serializable {
 
     int cores;
 
+    String segment;
+
     String appName;
 
     double avgResult;
@@ -41,6 +43,10 @@ public class AverageResult implements Serializable {
     double perfPerDollar;
 
     double perfPerWatt;
+
+    double perfPerCoreHIB;
+
+    double averagePerfHIB;
 
     double coefficientOfVariation;
 

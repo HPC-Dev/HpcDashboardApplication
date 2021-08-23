@@ -36,7 +36,7 @@ function updateTableUsers(columns, data) {
     var table;
 
     if (data.length > 0) {
-        table = "<table class='table table-responsive table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-bordered ' id='fixTableHead'>" + getHeaders(columns) + getBody(columns, data) + "</table>";
 
     } else {
         table = "<p></p>";
@@ -49,7 +49,7 @@ function updateTableStatus(columns, data) {
     var table;
 
     if (data.length > 0) {
-        table = "<table class='table table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-bordered ' id='fixTableHead'>" + getHeaders(columns) + getBody(columns, data) + "</table>";
 
     } else {
         table = "<p></p>";
@@ -63,7 +63,7 @@ function updateTableProc(columns, data) {
     var table;
 
     if (data.length > 0) {
-        table = "<table class='table table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-bordered ' id='fixTableHead'>" + getHeaders(columns) + getBody(columns, data) + "</table>";
 
     } else {
         table = "<p></p>";
@@ -77,7 +77,7 @@ function updateTableCategory(columns, data) {
     var table;
 
     if (data.length > 0) {
-        table = "<table class='table table-bordered '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-bordered '  id='fixTableHead'>" + getHeaders(columns) + getBody(columns, data) + "</table>";
 
     } else {
         table = "<p></p>";

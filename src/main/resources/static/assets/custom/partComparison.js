@@ -28,12 +28,6 @@ $('#appDrop').on("change", function() {
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- CPU1 --</option>';
-            //            var len = data.length;
-            //            for (var i = 0; i < len; i++) {
-            //                html += '<option value="' + data[i] + '">' +
-            //                    data[i] + '</option>';
-            //            }
-            //            html += '</option>';
 
             for (var cpuGen in data) {
 
@@ -72,12 +66,6 @@ $('#appDrop').on("change", function() {
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
-            //            var len = data.length;
-            //            for (var i = 0; i < len; i++) {
-            //                html += '<option value="' + data[i] + '">' +
-            //                    data[i] + '</option>';
-            //            }
-            //            html += '</option>';
 
             for (var cpuGen in data) {
 
@@ -157,8 +145,6 @@ function getRunType1(preType1) {
                 $('#typeDrop1').val('');
             }
             getData();
-
-            //            type1 = $('#typeDrop1')[0].value;
 
         });
     }

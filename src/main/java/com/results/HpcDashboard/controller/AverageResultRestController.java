@@ -1013,7 +1013,7 @@ public class AverageResultRestController {
     }
 
     @GetMapping("/isvDrop")
-    public LinkedHashSet<String>  getISVDropDown(String[] cpuList, String[] typeList) {
+    public LinkedHashSet<String>  getISVDropDown(String[] cpuList, String[] typeList, String[] workloads) {
         LinkedHashSet<String>  isvs = new LinkedHashSet<>();
 
         String cpu1 = cpuList[0];

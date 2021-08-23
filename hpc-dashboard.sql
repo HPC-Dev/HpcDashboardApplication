@@ -5,15 +5,22 @@ use results_dashboard;
 show tables;
 
 
-select * from results;
+select * from average_result where run_type="baseline";
 
-select * from average_result;
+ALTER TABLE average_result DROP COLUMN perf_per_core_hib;
+
+select * from heat_map;
 
 select * from results where job_id ="1266a";
 
 #update heat_map set workload="hpc";
 
 select * from heat_map where run_type="latest_aocl";
+
+
+select * from average_result where run_type="latest_aocl";
+
+
 
 -- drop table average_result;
 
@@ -71,7 +78,7 @@ show tables;
 
 #drop table app_category;
 
-select * from results;
+select * from average_result;
 
 
 select * from average_result where app_name= "lsdyna" and cpu_sku IN ("7742","7763") and run_type IN ("baseline","sles12sp5_300a_edc") and nodes =1 ORDER BY avg_result DESC;

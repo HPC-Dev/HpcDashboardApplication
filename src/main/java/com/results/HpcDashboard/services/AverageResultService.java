@@ -19,10 +19,10 @@ public class AverageResultService {
 
 
     @Transactional
-    public void updateAverageResult(String cpu_sku, int nodes, String bm_name, double avg,double perCorePerf,double perfPerDollar,double perfPerWatt, double cv, int count, String runType , String workload) {
+    public void updateAverageResult(String segment,String cpu_sku, int nodes, String bm_name, double avg,double perCorePerf,double perfPerDollar,double perfPerWatt, double cv, int count, String runType , String workload, double averagePerfHIB, double perfPerCoreHIB) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        averageResultRepo.updateAverageResult(bm_name,cpu_sku,nodes,avg,perCorePerf,perfPerDollar,perfPerWatt,cv,count, runType, workload);
+        averageResultRepo.updateAverageResult(segment,bm_name,cpu_sku,nodes,avg,perCorePerf,perfPerDollar,perfPerWatt,cv,count, runType, workload, averagePerfHIB,perfPerCoreHIB);
     }
 
     @Transactional
@@ -124,6 +124,18 @@ public class AverageResultService {
         return app_list;
     }
 
+    public List<String> getApp(String workloads[]) {
+
+        List<String> app_list = null;
+        app_list = averageResultRepo.getAPP(workloads);
+
+        if(app_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return app_list;
+    }
+
+
     public List<String> getApp(String cpu) {
 
         List<String> app_list = null;
@@ -179,6 +191,18 @@ public class AverageResultService {
         return cpu_list;
     }
 
+    public List<String> getCpuWorkloads(String[] workloads) {
+
+        List<String> cpu_list = null;
+        cpu_list = averageResultRepo.getCpuWorkloads(workloads);
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
+
     public List<String> getJustCpu() {
 
         List<String> cpu_list = null;
@@ -194,6 +218,17 @@ public class AverageResultService {
 
         List<String> runType_list = null;
         runType_list = averageResultRepo.getRunTypes(appName);
+
+        if(runType_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return runType_list;
+    }
+
+    public List<String> getRunTypes(String appName, String[] workloads) {
+
+        List<String> runType_list = null;
+        runType_list = averageResultRepo.getRunTypes(appName,workloads);
 
         if(runType_list ==null){
             return Collections.EMPTY_LIST;
@@ -230,6 +265,17 @@ public class AverageResultService {
 
         List<String> cpu_list = null;
         cpu_list = averageResultRepo.getCpuSelected(appName,  runTypes);
+
+        if(cpu_list ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return cpu_list;
+    }
+
+    public List<String> getCpuSelected(String appName,  List<String> runTypes, String[] workloads) {
+
+        List<String> cpu_list = null;
+        cpu_list = averageResultRepo.getCpuSelected(appName, runTypes, workloads);
 
         if(cpu_list ==null){
             return Collections.EMPTY_LIST;
@@ -323,5 +369,15 @@ public class AverageResultService {
             return Collections.EMPTY_LIST;
         }
         return run_count;
+    }
+
+    public List<String> getSegments() {
+        List<String> segments = null;
+        segments = averageResultRepo.getSegments();
+
+        if(segments ==null){
+            return Collections.EMPTY_LIST;
+        }
+        return segments;
     }
 }

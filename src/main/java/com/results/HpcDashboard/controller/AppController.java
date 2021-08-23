@@ -138,18 +138,6 @@ public class AppController {
         return "partComparison";
     }
 
-    @GetMapping("/heatMap")
-    public String showHeatMap(Model model) {
-
-        List<String> cpu_list = averageResultService.getJustCpu();
-        Map<String, List<String>> cpuMap = util.getCPUDropdown(cpu_list);
-
-        model.addAttribute("cpuMap", cpuMap );
-
-        model.addAttribute("cpus", cpu_list);
-        return "heatMap";
-    }
-
 
     @GetMapping("/uProfRadar")
     public String showuProfRadar(Model model) {
@@ -171,21 +159,53 @@ public class AppController {
         return util.getCPUDropdown(cpu_list);
     }
 
-    @RequestMapping(value = "/runTypes", method = RequestMethod.GET)
+    @RequestMapping(value = "/cpusByWorkload", method = RequestMethod.GET)
     public @ResponseBody
-    List<String> findAllrunTypes(
-            @RequestParam(value = "appName", required = true) String appName) {
+    Map<String, List<String>> findAllCPUsByWorkload(
+            String[] workloads) {
 
-        return averageResultService.getRunTypes(appName);
+        if(workloads==null || workloads.length ==0) {
+            List<String> cpu_list = averageResultService.getJustCpu();
+            return util.getCPUDropdown(cpu_list);
+        }
+
+       List<String> cpu_list = averageResultService.getCpuWorkloads(workloads);
+
+        return util.getCPUDropdown(cpu_list);
     }
+
+
+    @GetMapping("/heatMap")
+    public String showHeatMap(Model model) {
+
+        List<String> cpu_list = averageResultService.getJustCpu();
+        Map<String, List<String>> cpuMap = util.getCPUDropdown(cpu_list);
+
+        model.addAttribute("cpuMap", cpuMap );
+
+        model.addAttribute("cpus", cpu_list);
+        return "heatMap";
+    }
+
+
+    @GetMapping("/runTypes/{app_name}")
+    public  @ResponseBody List<String> findAllrunTypes(@PathVariable("app_name") String app_name,  String[] workloads) {
+
+        if(workloads==null || workloads.length ==0)
+        return averageResultService.getRunTypes(app_name);
+
+        return averageResultService.getRunTypes(app_name,workloads);
+    }
+
 
     @RequestMapping(value = "/workloads", method = RequestMethod.GET)
     public @ResponseBody
     List<String> findWorkloads() {
 
-        return resultService.getWorkload();
-    }
+        List<String> workloads = resultService.getWorkload();
 
+        return workloads;
+    }
 
     @RequestMapping(value = "/runTypesByCPU", method = RequestMethod.GET)
     public @ResponseBody
@@ -213,9 +233,14 @@ public class AppController {
     }
 
     @GetMapping("/cpusSelected/{app_name}")
-        public  @ResponseBody List<String> findAllCpusSelected(@PathVariable("app_name") String app_name,  String[] runTypes) {
+        public  @ResponseBody List<String> findAllCpusSelected(@PathVariable("app_name") String app_name,  String[] runTypes,  String[] workloads) {
         List<String> runType = Arrays.asList(runTypes);
+
+        if(workloads==null || workloads.length ==0)
             return averageResultService.getCpuSelected(app_name,runType);
+
+        return averageResultService.getCpuSelected(app_name,runType,workloads);
+
     }
 
     @RequestMapping(value = "/apps", method = RequestMethod.GET)
@@ -232,5 +257,16 @@ public class AppController {
             @RequestParam(value = "cpu", required = true) String cpu, @RequestParam(value = "type", required = true) String type) {
 
         return averageResultService.getAppByType(cpu, type);
+    }
+
+
+    @RequestMapping(value = "/appsByWorkload", method = RequestMethod.GET)
+    public @ResponseBody
+    List<String> findAppsByWorkload(String[] workloads) {
+
+        if(workloads==null || workloads.length ==0)
+            return averageResultService.getApp();
+
+        return averageResultService.getApp(workloads);
     }
 }

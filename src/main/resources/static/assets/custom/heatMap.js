@@ -6,25 +6,262 @@ Chart.defaults.global.defaultFontFamily = 'Verdana';
 var app;
 var cpuList = [];
 var typeList = [];
+var workloads = [];
+var cpuData = {};
 
 function clearHtml() {
     $('#heading').empty();
     $('#footnote').hide();
     $('.collapse').collapse('hide')
+
 }
 
+window.onload = function() {
 
-$('#cpuDrop1').on("change", function() {
-    var value = $(this).val();
+    $.getJSON("/workloads", {
+        ajax: 'true'
+    }, function(data) {
+        var len = data.length;
+
+        if (len > 1) {
+
+            $("#workloadCheckBox").show();
+        } else {
+
+            $("#workloadCheckBox").hide();
+        }
+        var html = '';
+
+        for (var i = 0; i < len; i++) {
+
+            html += ' <div id="workloadCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="workloadCheckBoxChange(\'' + data[i] + '\')" />' +
+                '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
+
+
+            html += '</div>';
+        }
+        $('#workloadCheckBox').append(html);
+
+    });
+
+    cpuDropDownLoad();
+
+};
+
+
+function workloadCheckBoxChange(workload) {
+
+    if (workload) {
+
+        var index = workloads.indexOf(workload);
+        if (index > -1) {
+            workloads.splice(index, 1);
+        } else {
+            workloads.push(workload);
+        }
+    }
+
+    cpuDropDownLoad();
+}
+
+function cpuDropDownLoad() {
+
+    var params = {};
+    params.workloads = workloads;
+    var preCpu1 = $("#cpuDrop1 option:selected").val();
+    var preCpu2 = $("#cpuDrop2 option:selected").val();
+    var preCpu3 = $("#cpuDrop3 option:selected").val();
+    var preCpu4 = $("#cpuDrop4 option:selected").val();
+
+
+    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+
+        var html = '<option value="" selected="true" disabled="disabled">-- CPU1 --</option>';
+
+        cpuData ={};
+        for (var cpuGen in data) {
+
+            cpuData[cpuGen] = data[cpuGen];
+        }
+
+
+        for (var cpuGen in data) {
+
+            html += '<optgroup label="' + cpuGen + '">'
+
+            for (var cpu in data[cpuGen]) {
+                html += '<option value="' + data[cpuGen][cpu] + '">' +
+                    data[cpuGen][cpu] + '</option>';
+            }
+
+            html += '</optgroup>'
+        }
+
+        $('#cpuDrop1').html(html);
+
+        for (var cpuGen in data) {
+
+            if (data[cpuGen].includes(preCpu1)) {
+                $('#cpuDrop1').val(preCpu1);
+                cpuChange1();
+                break;
+            } else {
+                $('#cpuDrop1').val('');
+                $('#typeDrop1').val('');
+                clearHtml();
+            }
+
+        }
+
+        var flag = 0;
+            for (var cpu in cpuList) {
+
+                    for (var cpuGen in cpuData) {
+
+                        if (cpuData[cpuGen].includes(cpuList[cpu])) {
+                            flag = 1;
+                            break;
+                        }
+                    }
+                }
+                if (flag == 0) {
+                    $('#tableHeatMap').html('');
+                }
+
+
+
+    });
+
+    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+
+        var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
+
+        for (var cpuGen in data) {
+
+            html += '<optgroup label="' + cpuGen + '">'
+
+            for (var cpu in data[cpuGen]) {
+                html += '<option value="' + data[cpuGen][cpu] + '">' +
+                    data[cpuGen][cpu] + '</option>';
+
+            }
+
+            html += '</optgroup>'
+        }
+
+        $('#cpuDrop2').html(html);
+
+        for (var cpuGen in data) {
+
+            if (data[cpuGen].includes(preCpu2)) {
+                $('#cpuDrop2').val(preCpu2);
+                cpuChange2();
+                break;
+            } else {
+                $('#cpuDrop2').val('');
+                $('#typeDrop2').val('');
+                clearHtml();
+
+            }
+
+        }
+
+
+    });
+
+    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+
+        var html = '<option value="" selected="true" disabled="disabled">-- CPU3 --</option>';
+
+        for (var cpuGen in data) {
+
+            html += '<optgroup label="' + cpuGen + '">'
+
+            for (var cpu in data[cpuGen]) {
+                html += '<option value="' + data[cpuGen][cpu] + '">' +
+                    data[cpuGen][cpu] + '</option>';
+
+            }
+
+            html += '</optgroup>'
+        }
+
+        $('#cpuDrop3').html(html);
+
+        for (var cpuGen in data) {
+
+            if (data[cpuGen].includes(preCpu3)) {
+                $('#cpuDrop3').val(preCpu3);
+                cpuChange3();
+                break;
+            } else {
+                $('#cpuDrop3').val('');
+                $('#typeDrop3').val('');
+                clearHtml();
+
+            }
+
+        }
+
+
+    });
+
+    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+
+        var html = '<option value="" selected="true" disabled="disabled">-- CPU4 --</option>';
+
+        for (var cpuGen in data) {
+
+            html += '<optgroup label="' + cpuGen + '">'
+
+            for (var cpu in data[cpuGen]) {
+                html += '<option value="' + data[cpuGen][cpu] + '">' +
+                    data[cpuGen][cpu] + '</option>';
+
+            }
+
+            html += '</optgroup>'
+        }
+
+        $('#cpuDrop4').html(html);
+
+        for (var cpuGen in data) {
+
+            if (data[cpuGen].includes(preCpu4)) {
+                $('#cpuDrop4').val(preCpu4);
+                cpuChange4();
+                break;
+            } else {
+                $('#cpuDrop4').val('');
+                $('#typeDrop4').val('');
+                clearHtml();
+
+            }
+
+        }
+    });
+
+
+}
+
+$("#cpuDrop1").on("change", cpuChange1);
+$("#cpuDrop2").on("change", cpuChange2);
+$("#cpuDrop3").on("change", cpuChange3);
+$("#cpuDrop4").on("change", cpuChange4);
+
+function cpuChange1() {
+
+    var value = $('#cpuDrop1').val();
 
     var preValue1 = $("#typeDrop1 option:selected").val();
-    // $("#type1").show();
+
     clearHtml();
     $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
-
-            cpu: $(this).val(),
+            cpu: value,
             ajax: 'true'
         }, function(data) {
 
@@ -41,30 +278,28 @@ $('#cpuDrop1').on("change", function() {
             if (data.includes(preValue1)) {
                 $('#typeDrop1').val(preValue1);
             } else if (data.includes('latest')) {
-              $('#typeDrop1').val('latest');
-              }
-              else{
-              $('#typeDrop1').val('');
-              }
+                $('#typeDrop1').val('latest');
+            } else {
+                $('#typeDrop1').val('');
+            }
             getISV();
 
             setTimeout(getData, 40);
         });
     }
 
-});
+}
 
 
-$('#cpuDrop2').on("change", function() {
-    var value = $(this).val();
+function cpuChange2() {
+    var value = $('#cpuDrop2').val();
     var preValue2 = $("#typeDrop2 option:selected").val();
 
     clearHtml();
-    // $("#type2").show();
     $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
-            cpu: $(this).val(),
+            cpu: value,
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- RunType2 --</option>';
@@ -80,11 +315,11 @@ $('#cpuDrop2').on("change", function() {
             if (data.includes(preValue2)) {
                 $('#typeDrop2').val(preValue2);
             } else if (data.includes('latest')) {
-              $('#typeDrop2').val('latest');
-              }
-              else{
-              $('#typeDrop2').val('');
-             }
+                $('#typeDrop2').val('latest');
+            } else {
+                $('#typeDrop2').val('');
+            }
+
             getISV();
 
             setTimeout(getData, 40);
@@ -92,20 +327,17 @@ $('#cpuDrop2').on("change", function() {
         });
 
     }
+}
 
 
-});
-
-
-$('#cpuDrop3').on("change", function() {
-    var value = $(this).val();
+function cpuChange3() {
+    var value = $('#cpuDrop3').val();
     var preValue3 = $("#typeDrop3 option:selected").val();
     clearHtml();
-    // $("#type2").show();
     $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
-            cpu: $(this).val(),
+            cpu: value,
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- RunType3 --</option>';
@@ -122,31 +354,29 @@ $('#cpuDrop3').on("change", function() {
                 $('#typeDrop3').val(preValue3);
             } else if (data.includes('latest')) {
 
-             $('#typeDrop3').val('latest');
-             }
-             else{
-             $('#typeDrop3').val('');
-                          }
-           getISV();
+                $('#typeDrop3').val('latest');
+            } else {
+                $('#typeDrop3').val('');
+            }
+            getISV();
 
-           setTimeout(getData, 40);
+            setTimeout(getData, 40);
         });
 
     }
 
 
-});
+}
 
 
-$('#cpuDrop4').on("change", function() {
-    var value = $(this).val();
+function cpuChange4() {
+    var value = $('#cpuDrop4').val();
     var preValue4 = $("#typeDrop4 option:selected").val();
     clearHtml();
-    // $("#type2").show();
     $('#tableHeatMap').html('');
     if (value != '') {
         $.getJSON("/runTypesByCPU", {
-            cpu: $(this).val(),
+            cpu: value,
             ajax: 'true'
         }, function(data) {
             var html = '<option value="" selected="true" disabled="disabled">-- RunType4 --</option>';
@@ -164,9 +394,8 @@ $('#cpuDrop4').on("change", function() {
             } else if (data.includes('latest')) {
 
                 $('#typeDrop4').val('latest');
-            }
-            else{
-             $('#typeDrop4').val('');
+            } else {
+                $('#typeDrop4').val('');
             }
             getISV();
 
@@ -176,38 +405,38 @@ $('#cpuDrop4').on("change", function() {
     }
 
 
-});
+}
 
 
 $('#type1').on("change", function() {
 
-getISV();
+    getISV();
 
-setTimeout(getData, 40);
+    setTimeout(getData, 40);
 
 });
 
 $('#type2').on("change", function() {
 
-getISV();
+    getISV();
 
-setTimeout(getData, 40);
+    setTimeout(getData, 40);
 
 });
 
 $('#type3').on("change", function() {
 
-getISV();
+    getISV();
 
-setTimeout(getData, 40);
+    setTimeout(getData, 40);
 
 });
 
 $('#type4').on("change", function() {
 
-getISV();
+    getISV();
 
-setTimeout(getData, 40);
+    setTimeout(getData, 40);
 
 });
 
@@ -215,7 +444,10 @@ setTimeout(getData, 40);
 $("#isv").on("change", getData);
 
 
-function captureCPUsTypes(){
+function captureCPUsTypes() {
+
+    var params = {};
+    params.workloads = workloads;
     cpuList = [];
     typeList = [];
 
@@ -223,6 +455,7 @@ function captureCPUsTypes(){
     cpu2 = $('#cpuDrop2')[0].value;
     cpu3 = $('#cpuDrop3')[0].value;
     cpu4 = $('#cpuDrop4')[0].value;
+
 
     type1 = $('#typeDrop1')[0].value;
     type2 = $('#typeDrop2')[0].value;
@@ -239,51 +472,71 @@ function captureCPUsTypes(){
     typeList.push(type3);
     typeList.push(type4);
 
-    var filteredTypeList = typeList.filter(function(type) {
-        return type != "";
-    });
 
-    typeList = filteredTypeList;
+     var filteredTypeList = typeList.filter(function(type) {
+            return type != "";
+        });
 
-    for (var i = 0; i < cpuList.length; i++) {
-        if (cpuList[i].includes("CPU") || cpuList[i] == "" ) {
-            cpuList.splice(i, 1);
-            i--;
+        typeList = filteredTypeList;
+
+        for (var i = 0; i < cpuList.length; i++) {
+            if (cpuList[i].includes("CPU") || cpuList[i] == "") {
+                cpuList.splice(i, 1);
+                i--;
+            }
+        }
+
+    for (var cpu in cpuList) {
+        var flag = 0;
+        for (var cpuGen in cpuData) {
+
+            if (cpuData[cpuGen].includes(cpuList[cpu])) {
+                flag = 1;
+                break;
+            }
+        }
+
+        if (flag == 0) {
+            const index = cpuList.indexOf(cpuList[cpu])
+            cpuList.splice(index, 1);
+            typeList.splice(index, 1);
         }
     }
+
 
 }
 
 
 function getISV() {
 
-captureCPUsTypes();
-if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
+    captureCPUsTypes();
+    if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
 
         var params = {};
         params.cpuList = cpuList;
         params.typeList = typeList;
+        params.workloads = workloads;
 
-    var preISV = $("#isvDrop option:selected").val();
+        var preISV = $("#isvDrop option:selected").val();
 
-   $.getJSON("/avg/isvDrop/", $.param(params, true), function(data) {
-                    var html = '<option value="All" selected="true" >All</option>';
-                    var len = data.length;
+        $.getJSON("/avg/isvDrop/", $.param(params, true), function(data) {
+            var html = '<option value="All" selected="true" >All</option>';
+            var len = data.length;
 
-                    for (var i = 0; i < len; i++) {
-                        html += '<option value="' + data[i] + '">' +
-                            data[i] + '</option>';
-                    }
-                    html += '</option>';
-                    $('#isvDrop').html(html);
+            for (var i = 0; i < len; i++) {
+                html += '<option value="' + data[i] + '">' +
+                    data[i] + '</option>';
+            }
+            html += '</option>';
+            $('#isvDrop').html(html);
 
-                    if (data.includes(preISV)) {
-                        $('#isvDrop').val(preISV);
-                    } else {
+            if (data.includes(preISV)) {
+                $('#isvDrop').val(preISV);
+            } else {
 
-                        $('#isvDrop').val('All');
-                    }
-                });
+                $('#isvDrop').val('All');
+            }
+        });
     }
 
 }
@@ -295,20 +548,19 @@ function getData() {
 
     captureCPUsTypes();
 
-
     if ((cpuList.length > 1 && typeList.length > 1 && (cpuList.length == typeList.length)) && !(cpu1 === cpu2 && type1 === type2)) {
 
-    var isv = $('#isvDrop')[0].value;
+        var isv = $('#isvDrop')[0].value;
 
 
         var params = {};
         params.cpuList = cpuList;
         params.typeList = typeList;
-        params.isv  = isv;
+        params.isv = isv;
 
 
-        if(cpuList.length > 3)
-        $('head').append('<link rel="stylesheet" href="assets/custom/heatMap.css"/>');
+        if (cpuList.length > 3)
+            $('head').append('<link rel="stylesheet" href="assets/custom/heatMap.css"/>');
 
         $.getJSON("/avg/heatMap/", $.param(params, true), function(data) {
             if (data.heatMapResults != null && data.heatMapResults.length > 1) {
@@ -329,7 +581,7 @@ function getData() {
 function updateTable(columns, data, comment) {
 
     var header = "";
-    header += cpu1 + "_" + type1 + " vs ( ";
+    header += cpuList[0] + "_" + typeList[0] + " vs ( ";
 
     for (i = 1; i < cpuList.length; i++) {
         header += cpuList[i] + "_" + typeList[i];
@@ -346,8 +598,9 @@ function updateTable(columns, data, comment) {
         $('#heading').show();
         $('#footnote').show();
 
-        //        table = "<table class='table table-responsive '>" + getHeaders(columns) + getBody(columns, data) + getFooters(columns) + "</table>";
-        table = "<table class='table table-responsive '>" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-responsive' >" + getHeaders(columns) + getBody(columns, data) + "</table>";
+
+
     } else {
         clearHtml();
         table = "<p>No data available</p>";
@@ -362,33 +615,25 @@ function getHeaders(columns) {
 
         if (column === 'isv') {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
-        } else if (column === 'perNode1' || column === 'perCore1' ) {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
-        } else if (column === 'perNode2' || column === 'perCore2' ) {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
-        } else if (column === 'perNode3' || column === 'perCore3' ) {
-            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
-        }
-         else if ( column === 'perDollar1') {
-         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "/ $" + '</font></th>')
-         }
-         else if ( column === 'perDollar2') {
-         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "/ $" + '</font></th>')
-         }
-         else if ( column === 'perDollar3') {
-         headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "/ $" + '</font></th>')
-         }
-         else if ( column === 'perWatt1') {
-                  headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' +  "/ Watt" + '</font></th>')
-          }
-          else if ( column === 'perWatt2') {
-          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' +  "/ Watt" + '</font></th>')
-          }
-          else if ( column === 'perWatt3') {
-          headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' +  "/ Watt" + '</font></th>')
-          }
-
-        else {
+        } else if (column === 'perNode1' || column === 'perCore1') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[1] + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
+        } else if (column === 'perNode2' || column === 'perCore2') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[2] + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
+        } else if (column === 'perNode3' || column === 'perCore3') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[3] + '</br>' + "/ " + column.slice(3, -1) + '</font></th>')
+        } else if (column === 'perDollar1') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[1] + '</br>' + "/ $" + '</font></th>')
+        } else if (column === 'perDollar2') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[2] + '</br>' + "/ $" + '</font></th>')
+        } else if (column === 'perDollar3') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[3] + '</br>' + "/ $" + '</font></th>')
+        } else if (column === 'perWatt1') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[1] + '</br>' + "/ Watt" + '</font></th>')
+        } else if (column === 'perWatt2') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[2] + '</br>' + "/ Watt" + '</font></th>')
+        } else if (column === 'perWatt3') {
+            headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[3] + '</br>' + "/ Watt" + '</font></th>')
+        } else {
             headers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         }
     });
@@ -404,11 +649,11 @@ function getFooters(columns) {
         if (column === 'isv') {
             footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.toUpperCase() + '</font></th>')
         } else if (column === 'perNode1' || column === 'perCore1' || column === 'perDollar1' || column === 'perWatt1') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu2 + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[1] + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
         } else if (column === 'perNode2' || column === 'perCore2' || column === 'perDollar2' || column === 'perWatt2') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu3 + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[2] + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
         } else if (column === 'perNode3' || column === 'perCore3' || column === 'perDollar3' || column === 'perWatt3') {
-            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpu4 + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
+            footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white"> ' + cpuList[3] + '</br>' + column.charAt(0).toUpperCase() + column.slice(3, -1) + '</font></th>')
         } else {
             footers.push('<th style="border-bottom: 1px solid black;border-collapse: collapse"; bgcolor="#343A40"> <font color="white">' + column.charAt(0).toUpperCase() + column.slice(1) + '</font></th>')
         }
@@ -486,7 +731,6 @@ function generateRow(columns, rowData) {
             }
 
         } else {
-            //            row.push('<td bgcolor="#D3D3D3" style="font-weight:bold">' + val + '</td>')
             row.push('<td bgcolor="#FFFFFF"  style="font-weight:bold ; white-space: nowrap">' + val + '</td>')
 
         }

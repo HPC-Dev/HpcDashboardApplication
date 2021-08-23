@@ -76,22 +76,22 @@
             <form action="#" th:action="@{/result}" th:object="${command}" method="post" enctype="multipart/form-data">
 
                 <div class="form-group">
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="option1" class="custom-control-input" value="paste" checked="checked" th:field="*{radioButtonSelectedValue}">
-                        <label class="custom-control-label" for="option1">Paste results</label>
-                    </div>
+<!--                    <div class="custom-control custom-radio custom-control-inline">-->
+<!--                        <input type="radio" id="option1" class="custom-control-input" value="paste" checked="checked" th:field="*{radioButtonSelectedValue}">-->
+<!--                        <label class="custom-control-label" for="option1">Paste results</label>-->
+<!--                    </div>-->
                     <div class="custom-control custom-radio custom-control-inline">
                         <input type="radio" id="option2" class="custom-control-input" value="upload" th:field="*{radioButtonSelectedValue}">
                         <label class="custom-control-label" for="option2">Upload file</label>
                     </div>
                 </div>
 
-                <div id="textArea"  class="form-group col-sm-6" style='display:none;'>
-                <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
-                   th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
-                    error</p>
-                <textarea rows="8" cols="60" th:field="*{textareaField}" ></textarea>
-                </div>
+<!--                <div id="textArea"  class="form-group col-sm-6" style='display:none;'>-->
+<!--                <p class="error-message" th:if="${#fields.hasGlobalErrors()}"-->
+<!--                   th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation-->
+<!--                    error</p>-->
+<!--                <textarea rows="8" cols="60" th:field="*{textareaField}" ></textarea>-->
+<!--                </div>-->
 
                 <div id="fileUpload"  class="form-group col-sm-6" style='display:none;'>
                     <label for="file">Select a CSV file</label>
@@ -102,19 +102,20 @@
                     <button type="submit" class="btn btn-success">Submit</button>
                 </div>
 
-                <div id="note" class="card" style="width: 20rem;display:none;margin-left:100px; margin-top:40px">
-                    <div class="card-body">
-                        <h6 class="card-title">Note:</h6>
-                        <p class="card-text" style="font-size:13px;" >Pasting multiple results should be delimited by <b>!</b></p>
-                        <p class="card-text" style="font-size:11px;">e.g. 66215,lsdyna,ls-3cars,1,48,pluto16,1141,7f72 <b>!</b> 66216,lsdyna,ls-3cars,1,48,pluto21,1139,7f72</p>
-                </div>
-                </div>
+<!--                <div id="note" class="card" style="width: 20rem;display:none;margin-left:100px; margin-top:40px">-->
+<!--                    <div class="card-body">-->
+<!--                        <h6 class="card-title">Note:</h6>-->
+<!--                        <p class="card-text" style="font-size:13px;" >Pasting multiple results should be delimited by <b>!</b></p>-->
+<!--                        <p class="card-text" style="font-size:11px;">e.g. 66215,lsdyna,ls-3cars,1,48,pluto16,1141,7f72 <b>!</b> 66216,lsdyna,ls-3cars,1,48,pluto21,1139,7f72</p>-->
+<!--                </div>-->
+<!--                </div>-->
 
-                <div id="noteFile" class="card" style="width: 45rem;display:none;margin-top:40px">
+                <div id="noteFile" class="card" style="width: 46rem;display:none;margin-top:40px">
                     <div class="card-body">
                         <h6 class="card-title">Note:</h6>
                         <p class="card-text" style="font-size:13px;" >Please remove header from csv file. </p>
-                        <p class="card-text" style="font-size:10px;">Column order: Job Id, App_Name, Benchmark, Nodes, Cores, node_name, Result, CPU, OS, BIOS, Cluster, User, Platform, cpu_generation, Run_type, Workload </p>
+                        <b class="card-text" style="font-size:11px;">Column order:  </b>
+                        <p class="card-text" style="font-size:11px;">Job Id, App_Name, Benchmark, Nodes, Cores, node_name, Result, CPU, OS, BIOS, Cluster, User, Platform, cpu_generation, Run_type, Workload </p>
                     </div>
                 </div>
 

@@ -36,6 +36,8 @@ function dataTable() {
         }],
 
         columns: [{
+                data: 'segment'
+            }, {
                 data: 'appName'
             },
             {
@@ -64,20 +66,34 @@ function dataTable() {
                     return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
                 }
             },
-//            {
-//                data: 'perfPerDollar',
-//                searchable: false,
-//                "render": function(data, type, full) {
-//                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
-//                }
-//            },
-//            {
-//                data: 'perfPerWatt',
-//                searchable: false,
-//                "render": function(data, type, full) {
-//                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
-//                }
-//            },
+            {
+                data: 'averagePerfHIB',
+                searchable: false,
+                "render": function(data, type, full) {
+                    return data.toString().match(/\d+(\.\d{1,8})?/g)[0];
+                }
+            },
+            {
+                data: 'perfPerCoreHIB',
+                searchable: false,
+                "render": function(data, type, full) {
+                    return data.toString().match(/\d+(\.\d{1,8})?/g)[0];
+                }
+            },
+            //            {
+            //                data: 'perfPerDollar',
+            //                searchable: false,
+            //                "render": function(data, type, full) {
+            //                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+            //                }
+            //            },
+            //            {
+            //                data: 'perfPerWatt',
+            //                searchable: false,
+            //                "render": function(data, type, full) {
+            //                    return data.toString().match(/\d+(\.\d{1,3})?/g)[0];
+            //                }
+            //            },
             {
                 data: 'coefficientOfVariation',
                 searchable: false,
@@ -87,8 +103,7 @@ function dataTable() {
             },
             {
                 data: 'runType'
-            }
-            ,
+            },
             {
                 data: 'workload'
             }
@@ -96,6 +111,7 @@ function dataTable() {
     });
 
 }
+
 
 $('#appDrop').change(
     function() {
@@ -132,13 +148,22 @@ $('#cpuGenDrop').change(
         });
     });
 
+$('#segmentDrop').change(function() {
+    var filter = '';
+    $('#segmentDrop option:selected').each(function() {
+        filter += $(this).text() + "+";
+    });
+    filter = filter.substring(0, filter.length - 1);
+    table.column(0).search(filter).draw();
+});
+
 $('#appDrop').change(function() {
     var filter = '';
     $('#appDrop option:selected').each(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(0).search(filter).draw();
+    table.column(1).search(filter).draw();
 });
 
 $('select#bmDrop').change(function() {
@@ -147,7 +172,7 @@ $('select#bmDrop').change(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(1).search(filter).draw();
+    table.column(2).search(filter).draw();
 });
 
 $('select#nodeDrop').change(function() {
@@ -156,7 +181,7 @@ $('select#nodeDrop').change(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(2).search(filter).draw();
+    table.column(3).search(filter).draw();
 });
 
 $('select#cpuDrop').change(function() {
@@ -165,7 +190,7 @@ $('select#cpuDrop').change(function() {
         filter += $(this).text() + "+";
     });
     filter = filter.substring(0, filter.length - 1);
-    table.column(3).search(filter).draw();
+    table.column(4).search(filter).draw();
 });
 
 
@@ -176,7 +201,7 @@ $('select#runTypeDrop').change(function() {
     });
 
     filter = filter.substring(0, filter.length - 1);
-    table.column(9).search(filter).draw();
+    table.column(12).search(filter).draw();
 });
 
 $('select#runCountDrop').change(function() {
@@ -186,7 +211,7 @@ $('select#runCountDrop').change(function() {
     });
 
     filter = filter.substring(0, filter.length - 1);
-    table.column(8).search(filter).draw();
+    table.column(11).search(filter).draw();
 });
 
 $('select#workloadDrop').change(function() {
@@ -196,7 +221,7 @@ $('select#workloadDrop').change(function() {
     });
 
     filter = filter.substring(0, filter.length - 1);
-    table.column(11).search(filter).draw();
+    table.column(13).search(filter).draw();
 });
 
 $('#clearButton').on('click', function() {

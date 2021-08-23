@@ -34,7 +34,16 @@
         </div>
         <div class="col-custom-2" style="margin-top:60px">
 
-            <div id="app" class="dropdown">
+            <div id="segement" class="dropdown">
+                <select class="form-control form-control-sm" id="segmentDrop" name="appDrop">
+                    <option  selected="true" disabled="disabled">-- Segment --</option>
+                    <option th:each="segment : ${segments}"
+                            th:value="${segment}"
+                            th:text="${segment}"></option>
+                </select>
+            </div>
+
+            <div id="app" class="dropdown" style="margin-top:10px">
                 <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                     <option  selected="true" disabled="disabled">-- App --</option>
                     <option th:each="app : ${apps}"
@@ -120,6 +129,7 @@
                 <table id="average" class="table table-bordered" style="width: 100%">
                     <thead bgcolor="#D3D3D3">
                     <tr>
+                        <th>Segment</th>
                         <th>Application</th>
                         <th>Benchmark</th>
                         <th>Node count</th>
@@ -127,6 +137,8 @@
                         <th>Cores</th>
                         <th>Avg result</th>
                         <th>Perf per core</th>
+                        <th>Avg result HIB</th>
+                        <th>Perf per core HIB</th>
                         <th>Variance</th>
                         <th>Run count</th>
                         <th>Run type</th>
