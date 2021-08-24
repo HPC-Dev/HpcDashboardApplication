@@ -5,7 +5,7 @@ var typeVal;
 var flag;
 var cpuList = [];
 var runTypes = [];
-
+var workloads = [];
 var store = {};
 
 function addToStore(key, value) {
@@ -21,34 +21,141 @@ function clearFromStore(key) {
 }
 
 
+$("#appDrop").on("change", appChange);
+
 $('#clearButton').on('click', function() {
 
     $('input[type=checkbox]').prop('checked', false);
-    cpuList.length = 0;
-    runTypes.length=0;
-    clearChart();
-//    $("#clear").hide();
-    clearHtml();
+    workloads.length = 0;
+    clearScreen();
+    appDropDownLoad();
 });
 
+function clearScreen() {
+    $('#appDrop').val('');
+    clearFromStore(cpuList);
+    clearFromStore(runTypes);
+    cpuList.length = 0;
+    runTypes.length = 0;
+    $("#typeCheckBox").html("");
+    $("#checkbox").html("");
+    $("#clear").hide();
+    clearChart();
+    clearHtml();
+}
 
-$('#appDrop').on("change", function() {
 
-    addToStore('runTypes',runTypes );
-    addToStore('cpuList',cpuList );
+window.onload = function() {
+
+
+    $.getJSON("/workloads", {
+        ajax: 'true'
+    }, function(data) {
+        var len = data.length;
+
+        if (len > 1) {
+
+            $("#workloadCheckBox").show();
+        } else {
+
+            $("#workloadCheckBox").hide();
+        }
+        var html = '';
+
+        for (var i = 0; i < len; i++) {
+            html += ' <div id="workloadCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="workloadCheckBoxChange(\'' + data[i] + '\')" />' +
+                '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
+
+
+            html += '</div>';
+        }
+        $('#workloadCheckBox').append(html);
+
+    });
+
+    appDropDownLoad();
+
+};
+
+
+
+
+function workloadCheckBoxChange(workload) {
+
+    $("#clear").show();
+
+    if (workload) {
+
+        var index = workloads.indexOf(workload);
+        if (index > -1) {
+            workloads.splice(index, 1);
+            if (workloads.length == 0) {
+                $("#clear").hide();
+            }
+        } else {
+            workloads.push(workload);
+        }
+    }
+
+    appDropDownLoad();
+}
+
+
+function appDropDownLoad() {
+
+    var params = {};
+    params.workloads = workloads;
+
+    if ($("#appDrop option:selected").val()) {
+        var preApp = $("#appDrop option:selected").val();
+    }
+
+    $.getJSON("/appsByWorkload", $.param(params, true), function(data) {
+
+        var html = '<option value="" selected="true" disabled="disabled">-- App --</option>';
+        var len = data.length;
+
+        for (var i = 0; i < len; i++) {
+            html += '<option value="' + data[i] + '">' +
+                data[i] + '</option>';
+        }
+        html += '</option>';
+        $('#appDrop').html(html);
+        if (data.includes(preApp)) {
+            $('#appDrop').val(preApp);
+            appChange(true);
+        } else {
+            clearScreen();
+        }
+
+    });
+
+}
+
+
+function appChange(isWorkloadChange) {
+
+    var params = {};
+    params.workloads = workloads;
+
+
+    addToStore('runTypes', runTypes);
+    addToStore('cpuList', cpuList);
 
 
     $('#checkbox').empty();
     $("#typeCheckBox").empty();
-    var value = $(this).val();
+
+    var app = $('#appDrop').val();
     $('#footnote').hide();
     $("#p1").hide();
     $("#p2").hide();
     $('.collapse').collapse('hide')
-    $.getJSON("/runTypes", {
-        appName: value,
-        ajax: 'true'
-    }, function(data) {
+
+    $.getJSON("/runTypes/" + app, $.param(params, true), function(data) {
+
         var len = data.length;
 
         if (len > 1) {
@@ -59,7 +166,7 @@ $('#appDrop').on("change", function() {
             typeVal = data[0];
             $("#typeCheckBox").hide();
         }
-        runTypeCheckBoxChange();
+        runTypeCheckBoxChange(isWorkloadChange);
         var html = '';
         var previousRunTypes = getFromStore('runTypes');
         var isAnyChecked = false;
@@ -68,7 +175,7 @@ $('#appDrop').on("change", function() {
         for (var i = 0; i < len; i++) {
             var isChecked = previousRunTypes.includes(data[i]);
 
-            if(isChecked ){
+            if (isChecked) {
                 isAnyChecked = true;
             }
 
@@ -81,8 +188,8 @@ $('#appDrop').on("change", function() {
 
         $('#typeCheckBox').append(html);
 
-        if(isAnyChecked && flag ==1 ) {
-            runTypeCheckBoxChange();
+        if (isAnyChecked && flag == 1) {
+            runTypeCheckBoxChange(isWorkloadChange);
         }
 
     });
@@ -90,10 +197,10 @@ $('#appDrop').on("change", function() {
     clearChart();
     clearHtml();
 
-});
+}
 
 
-function runTypeCheckBoxChange() {
+function runTypeCheckBoxChange(isWorkloadChange) {
 
     $('#checkbox').empty();
     $('#footnote').hide();
@@ -102,7 +209,7 @@ function runTypeCheckBoxChange() {
     $('.collapse').collapse('hide')
     var app = $('#appDrop')[0].value;
     var runTypes = [];
-//    cpuList.length = 0;
+
     if (flag == 1) {
         $("#typeCheckBox input:checked").each(function() {
             runTypes.push($(this).val());
@@ -113,7 +220,7 @@ function runTypeCheckBoxChange() {
 
     var params = {};
     params.runTypes = runTypes;
-
+    params.workloads = workloads;
     if (runTypes.length >= 1) {
         $("#checkbox").show();
         $("#clear").show();
@@ -121,15 +228,30 @@ function runTypeCheckBoxChange() {
             var len = data.length;
             var html = '';
             var previousCpuList = getFromStore('cpuList');
+
+
+            var latestCPUs = data;
+            var previousCPUs = getFromStore('cpuList');
+            var index;
+            for (var i = 0; i < previousCPUs.length; i++) {
+                index = latestCPUs.indexOf(previousCPUs[i]);
+                if (index == -1) {
+                    previousCPUs.splice(i, 1);
+                    i--;
+                }
+            }
+            previousCpuList = previousCPUs;
+
+
             var isAnyChecked = false;
             for (var i = 0; i < len; i++) {
                 var isChecked = previousCpuList.indexOf(data[i]);
-                var bool =false;
-                if(isChecked != -1){
-                bool = true;
+                var bool = false;
+                if (isChecked != -1) {
+                    bool = true;
                 }
-                 if(bool) {
-                isAnyChecked = true;
+                if (bool) {
+                    isAnyChecked = true;
                 }
 
 
@@ -141,34 +263,39 @@ function runTypeCheckBoxChange() {
 
             selectedItems = [];
 
-            if(isAnyChecked) {
-                selectedItems.push(previousCpuList)
+            if (isAnyChecked) {
+                selectedItems.push(...previousCpuList)
             }
 
             $('#checkbox').append(html);
 
-            selectedItems.forEach(item => checkBoxChange(item))
+            if (isWorkloadChange) {
+                checkBoxChange();
+            } else {
+                selectedItems.forEach(item => checkBoxChange(item))
+            }
+
 
         });
     } else {
         $("#checkbox").hide();
-        $("#clear").hide();
         $('#footnote').hide();
         $("#p1").hide();
         $("#p2").hide();
         $('.collapse').collapse('hide')
     }
-    checkBoxChange();
+
 }
 
 
 function checkBoxChange(cpuType) {
 
-     runTypes = [];
+    runTypes = [];
 
     if (cpuType) {
 
-        const index = cpuList.indexOf(cpuType);
+        var index = cpuList.indexOf(cpuType);
+
         if (index > -1) {
             cpuList.splice(index, 1);
         } else {
@@ -197,13 +324,12 @@ function checkBoxChange(cpuType) {
         }
 
         getMultiChartData();
-        //    var BACKGROUND_COLORS = ['rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)','#FF9E80', '#03A9F4', '#FFD180', , '#90A4AE', '#F9A825',  '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
-        //    var BORDER_COLORS = ['rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
 
         var BACKGROUND_COLORS = ['rgb(19,91,105)', 'rgb(133,155,163)', 'rgb(20,116,132)', '#8DB9CA', 'rgb(173,183,191)', 'rgb(21,104,121)', 'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(153, 102, 255, 0.2)', '#EFEBE9', 'rgba(54, 162, 235, 0.2)', 'rgba(192, 0, 0, 0.2)', '#D1C4E9', '#BBDEFB', '#FFD180', , '#90A4AE', '#F9A825', '#C5E1A5', '#80CBC4', '#7986CB', '#7E57C2', '#3949AB', '#e57373', '#546E7A', '#A1887F'];
         //var BORDER_COLORS = ['','','','','','','rgba(255, 99, 132, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)', 'rgba(153, 102, 255, 1)', '', 'rgba(54, 162, 235, 1)', 'rgba(192, 0, 0, 1)'];
 
         function getMultiChartData() {
+
 
             getData(cpuList);
             var app = $('#appDrop')[0].value;
@@ -290,9 +416,9 @@ function checkBoxChange(cpuType) {
 
                             tooltips: {
                                 callbacks: {
-                                     label: function(tooltipItem, data) {
-                                     return data.datasets[tooltipItem.datasetIndex].label + ":  " + tooltipItem.yLabel;
-                                     }
+                                    label: function(tooltipItem, data) {
+                                        return data.datasets[tooltipItem.datasetIndex].label + ":  " + tooltipItem.yLabel;
+                                    }
                                 },
                                 titleMarginBottom: 10,
                                 titleFontColor: '#6e707e',

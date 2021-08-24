@@ -27,18 +27,21 @@
 
 <br>
 
-<div class="container-fluid" style="max-width:1500px; padding:0;">
+<div class="container-fluid" style="max-width:1460px; padding:0;">
 
- <div class="row" >
-        <div id="app" class="col-sm-2 dropdown">
+    <div id="workloadCheckBox" style="display:none;" >
+
+    </div>
+
+
+    <div class="row" style="margin-top: 14px;">
+        <div id="app" class="col-sm-2 dropdown" >
             <select class="form-control form-control-sm" id="appDrop" name="appDrop">
                 <option value="" selected="true" disabled="disabled">-- App --</option>
-                <option th:each="app : ${apps}"
-                        th:value="${app}"
-                        th:text="${app}"></option>
             </select>
         </div>
- </div>
+
+    </div>
 
 
     <div id="typeCheckBox" style="margin-top: 14px;display:none;">
@@ -47,7 +50,7 @@
 
 
     <div id="checkbox" style="margin-top: 14px;display:none;">
-<!--    contents from js-->
+        <!--    contents from js-->
     </div>
 
 

@@ -92,7 +92,7 @@ table.dataTable thead .sorting_desc {
 
 #fixTableHead {
       overflow-y: auto;
-      height: 110px;
+      height: 65vh;
     }
 #fixTableHead thead th {
       position: sticky;

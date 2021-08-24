@@ -598,7 +598,7 @@ function updateTable(columns, data, comment) {
         $('#heading').show();
         $('#footnote').show();
 
-        table = "<table class='table table-responsive' >" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-responsive' id='fixTableHead' >" + getHeaders(columns) + getBody(columns, data) + "</table>";
 
 
     } else {
