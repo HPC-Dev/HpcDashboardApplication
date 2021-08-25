@@ -16,6 +16,27 @@ function clearHtml() {
 
 }
 
+$('#clearButton').on('click', function() {
+
+    $('input[type=checkbox]').prop('checked', false);
+    workloads.length = 0;
+    cpuList.length = 0;
+    typeList.length = 0;
+    $('#cpuDrop1').val('');
+    $('#typeDrop1').val('');
+    $('#cpuDrop2').val('');
+    $('#typeDrop2').val('');
+    $('#cpuDrop3').val('');
+    $('#typeDrop3').val('');
+    $('#cpuDrop4').val('');
+    $('#typeDrop4').val('');
+    $('#isvDrop').val('All');
+    clearHtml();
+    $('#tableHeatMap').html('');
+
+});
+
+
 window.onload = function() {
 
     $.getJSON("/workloads", {
@@ -79,7 +100,7 @@ function cpuDropDownLoad() {
     $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU1 --</option>';
-
+        html += '<option label=" "  value=" " >  </option>';
         cpuData ={};
         for (var cpuGen in data) {
 
@@ -137,7 +158,7 @@ function cpuDropDownLoad() {
     $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
-
+        html += '<option label=" "  value=" " >  </option>';
         for (var cpuGen in data) {
 
             html += '<optgroup label="' + cpuGen + '">'
@@ -174,7 +195,7 @@ function cpuDropDownLoad() {
     $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU3 --</option>';
-
+        html += '<option label=" "  value=" " >  </option>';
         for (var cpuGen in data) {
 
             html += '<optgroup label="' + cpuGen + '">'
@@ -211,7 +232,7 @@ function cpuDropDownLoad() {
     $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU4 --</option>';
-
+        html += '<option label=" "  value=" " >  </option>';
         for (var cpuGen in data) {
 
             html += '<optgroup label="' + cpuGen + '">'
@@ -259,7 +280,7 @@ function cpuChange1() {
 
     clearHtml();
     $('#tableHeatMap').html('');
-    if (value != '') {
+    if (value != '' && value != " ") {
         $.getJSON("/runTypesByCPU", {
             cpu: value,
             ajax: 'true'
@@ -282,11 +303,15 @@ function cpuChange1() {
             } else {
                 $('#typeDrop1').val('');
             }
-            getISV();
 
-            setTimeout(getData, 40);
         });
     }
+    else{
+         $('#typeDrop1').val('');
+    }
+
+    getISV();
+    setTimeout(getData, 40);
 
 }
 
@@ -480,7 +505,7 @@ function captureCPUsTypes() {
         typeList = filteredTypeList;
 
         for (var i = 0; i < cpuList.length; i++) {
-            if (cpuList[i].includes("CPU") || cpuList[i] == "") {
+            if (cpuList[i].includes("CPU") || cpuList[i] == "" || cpuList[i] == " ") {
                 cpuList.splice(i, 1);
                 i--;
             }
@@ -533,7 +558,6 @@ function getISV() {
             if (data.includes(preISV)) {
                 $('#isvDrop').val(preISV);
             } else {
-
                 $('#isvDrop').val('All');
             }
         });
@@ -598,7 +622,7 @@ function updateTable(columns, data, comment) {
         $('#heading').show();
         $('#footnote').show();
 
-        table = "<table class='table table-responsive' id='fixTableHead' >" + getHeaders(columns) + getBody(columns, data) + "</table>";
+        table = "<table class='table table-responsive noScroll' id='fixTableHead' >" + getHeaders(columns) + getBody(columns, data) + "</table>";
 
 
     } else {
