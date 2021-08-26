@@ -23,8 +23,8 @@ import javax.persistence.Table;
 @Builder
 public class AppCategory {
 
-    @JsonAlias({"Category"})
-    String category;
+    @JsonAlias({"Segment"})
+    String segment;
 
     @JsonAlias({"ISV"})
     String isv;
@@ -36,7 +36,7 @@ public class AppCategory {
     @JsonAlias({"Benchmark"})
     String bmName;
 
-    @JsonAlias({"Workload"})
-    String workload;
+    @JsonAlias({"Category"})
+    String category;
 }
 

@@ -19,10 +19,10 @@ public class AverageResultService {
 
 
     @Transactional
-    public void updateAverageResult(String segment,String cpu_sku, int nodes, String bm_name, double avg,double perCorePerf,double perfPerDollar,double perfPerWatt, double cv, int count, String runType , String workload, double averagePerfHIB, double perfPerCoreHIB) {
-        if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
+    public void updateAverageResult(String segment,String cpu_sku, int nodes, String bm_name, double avg,double perCorePerf,double perfPerDollar,double perfPerWatt, double cv, int count, String runType , String category, double averagePerfHIB, double perfPerCoreHIB) {
+        if(cpu_sku.equals("") || cpu_sku.equals(null) || bm_name.equals("") || bm_name.equals(null))
             return;
-        averageResultRepo.updateAverageResult(segment,bm_name,cpu_sku,nodes,avg,perCorePerf,perfPerDollar,perfPerWatt,cv,count, runType, workload, averagePerfHIB,perfPerCoreHIB);
+        averageResultRepo.updateAverageResult(segment,bm_name,cpu_sku,nodes,avg,perCorePerf,perfPerDollar,perfPerWatt,cv,count, runType, category, averagePerfHIB,perfPerCoreHIB);
     }
 
     @Transactional
@@ -37,11 +37,11 @@ public class AverageResultService {
         if (averageResult== null || averageResult.getCpuSku() == "" || averageResult.getCpuSku().equals(null) || averageResult.getBmName() == "" || averageResult.getBmName().equals(null) )
             return;
         //insert CV below
-        AverageResult avg = AverageResult.builder().appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult())
+        AverageResult avg = AverageResult.builder().segment(averageResult.getSegment()).appName(averageResult.getAppName().trim()).avgResult(averageResult.getAvgResult())
                 .perCorePerf(averageResult.getPerCorePerf()).perfPerDollar(averageResult.getPerfPerDollar()).perfPerWatt(averageResult.getPerfPerWatt())
                 .bmName(averageResult.getBmName().trim()).cores(averageResult.getCores()).cpuSku(averageResult.getCpuSku().trim())
                 .nodes(averageResult.getNodes()).coefficientOfVariation(averageResult.getCoefficientOfVariation()).runCount(averageResult.getRunCount())
-                .runType(averageResult.getRunType()).workload(averageResult.getWorkload()).build();
+                .runType(averageResult.getRunType()).category(averageResult.getCategory()).build();
         averageResultRepo.save(averageResult);
     }
 
@@ -124,10 +124,10 @@ public class AverageResultService {
         return app_list;
     }
 
-    public List<String> getApp(String workloads[]) {
+    public List<String> getApp(String categories[]) {
 
         List<String> app_list = null;
-        app_list = averageResultRepo.getAPP(workloads);
+        app_list = averageResultRepo.getAPP(categories);
 
         if(app_list ==null){
             return Collections.EMPTY_LIST;
@@ -191,10 +191,10 @@ public class AverageResultService {
         return cpu_list;
     }
 
-    public List<String> getCpuWorkloads(String[] workloads) {
+    public List<String> getCpuCategories(String[] categories) {
 
         List<String> cpu_list = null;
-        cpu_list = averageResultRepo.getCpuWorkloads(workloads);
+        cpu_list = averageResultRepo.getCpuCategories(categories);
 
         if(cpu_list ==null){
             return Collections.EMPTY_LIST;
@@ -225,10 +225,10 @@ public class AverageResultService {
         return runType_list;
     }
 
-    public List<String> getRunTypes(String appName, String[] workloads) {
+    public List<String> getRunTypes(String appName, String[] categories) {
 
         List<String> runType_list = null;
-        runType_list = averageResultRepo.getRunTypes(appName,workloads);
+        runType_list = averageResultRepo.getRunTypes(appName,categories);
 
         if(runType_list ==null){
             return Collections.EMPTY_LIST;
@@ -272,10 +272,10 @@ public class AverageResultService {
         return cpu_list;
     }
 
-    public List<String> getCpuSelected(String appName,  List<String> runTypes, String[] workloads) {
+    public List<String> getCpuSelected(String appName,  List<String> runTypes, String[] categories) {
 
         List<String> cpu_list = null;
-        cpu_list = averageResultRepo.getCpuSelected(appName, runTypes, workloads);
+        cpu_list = averageResultRepo.getCpuSelected(appName, runTypes, categories);
 
         if(cpu_list ==null){
             return Collections.EMPTY_LIST;

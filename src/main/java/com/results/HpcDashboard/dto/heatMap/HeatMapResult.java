@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 public class HeatMapResult {
 
-    String Category;
+    String Segment;
     String ISV;
     String Application;
     String Benchmark;

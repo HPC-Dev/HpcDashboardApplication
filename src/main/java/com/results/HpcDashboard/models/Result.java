@@ -94,9 +94,9 @@ public class Result implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStamp;
 
-    @JsonAlias({"workload"})
+    @JsonAlias({"category"})
     @CsvBindByPosition(position = 15)
-    String workload;
+    String category;
 
 
     @JsonAlias({"TimeStamp", "Time Stamp"})

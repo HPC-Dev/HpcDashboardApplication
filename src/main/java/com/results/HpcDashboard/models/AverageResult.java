@@ -55,6 +55,6 @@ public class AverageResult implements Serializable {
     @Id
     String runType;
 
-    String workload;
+    String category;
 
 }

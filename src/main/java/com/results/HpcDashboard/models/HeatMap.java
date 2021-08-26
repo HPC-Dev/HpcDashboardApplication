@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class HeatMap {
 
-    String category;
+    String segment;
 
     String isv;
 
@@ -51,7 +51,7 @@ public class HeatMap {
 
     int runCount;
 
-    String workload;
+    String category;
 
 
 

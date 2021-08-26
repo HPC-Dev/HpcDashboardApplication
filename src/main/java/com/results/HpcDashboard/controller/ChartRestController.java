@@ -868,117 +868,117 @@ public class ChartRestController {
     }
 
 
-    @GetMapping("/scalingTableOld/{cpu}/{app_name}")
-    public MultiChartTableResponse getScalingTableOld(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu) {
-
-        MultiChartTableResponse multiChartTableResponse = null;
-
-        List<Map<String, String>> resListFinal = null;
-        List<AverageResult> list = null;
-
-        list = averageResultService.getAvgResultCPUApp(cpu, app_name);
-
-
-        if (list == null || list.size() == 0)
-            return multiChartTableResponse;
-
-        Set<Integer> nodes = new LinkedHashSet<>();
-        Set<String> bms = new LinkedHashSet<>();
-
-        for (AverageResult avg : list) {
-            nodes.add(avg.getNodes());
-            bms.add(avg.getBmName());
-        }
-
-        List<String> bmlist = bms.stream().collect(Collectors.toList());
-        List<Integer> nodelist = nodes.stream().collect(Collectors.toList());
-
-        List<Map<String, Double>> resList = new ArrayList<>();
-
-        Map<String, Double> res = null;
-
-        List<String> nodesList = new ArrayList<>();
-
-        for (Integer n : nodes) {
-            res = new LinkedHashMap<>();
-            nodesList.add(n.toString());
-            for (AverageResult a : list) {
-                if (a.getNodes() == n) {
-
-                    res.put(a.getBmName(), a.getAvgResult());
-                }
-            }
-            resList.add(res);
-        }
-
-
-        List<Map<String, Double>> newResList = new ArrayList<>();
-
-        for (Map<String, Double> e : resList) {
-
-            Map<String, Double> map = new LinkedHashMap<>();
-            for (String bm : bmlist) {
-                if (!e.containsKey(bm)) {
-                    map.put(bm, 0.0);
-                } else {
-                    map.put(bm, e.get(bm));
-                }
-            }
-            newResList.add(map);
-
-        }
-
-
-        resListFinal = new ArrayList<>();
-        if(nodesList.size()>1) {
-            Map<String, Double> firstResult = new LinkedHashMap<>();
-            firstResult.putAll(newResList.get(0));
-
-            Map<String, String> temp = new LinkedHashMap<>();
-            temp.put("", nodesList.get(0));
-
-            for (Map.Entry<String, Double> d : newResList.get(0).entrySet()) {
-
-                if (Double.compare(d.getValue(), 0.0) > 0)
-                    temp.put(d.getKey(), "1.0");
-            }
-            resListFinal.add(temp);
-
-            newResList.remove(0);
-
-            int i = 1;
-
-            for (Map<String, Double> lis : newResList) {
-
-                temp = new LinkedHashMap<>();
-                temp.put("", nodesList.get(i));
-                for (Map.Entry<String, Double> d : lis.entrySet()) {
-                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0) {
-                        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
-                            double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
-                            temp.put(d.getKey(), String.valueOf(d1));
-
-                        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
-                            double d1 = util.round(d.getValue() / firstResult.get(d.getKey()), 3);
-                            temp.put(d.getKey(), String.valueOf(d1));
-                        }
-                    }
-
-                }
-                resListFinal.add(temp);
-                i++;
-            }
-
-            List<String> bmlistFinal = new ArrayList<>();
-
-            for (Map.Entry<String, String> bm : resListFinal.get(0).entrySet()) {
-                bmlistFinal.add(bm.getKey());
-            }
-
-            multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).build();
-        }
-        return multiChartTableResponse;
-    }
+//    @GetMapping("/scalingTableOld/{cpu}/{app_name}")
+//    public MultiChartTableResponse getScalingTableOld(@PathVariable("app_name") String app_name,@PathVariable("cpu") String cpu) {
+//
+//        MultiChartTableResponse multiChartTableResponse = null;
+//
+//        List<Map<String, String>> resListFinal = null;
+//        List<AverageResult> list = null;
+//
+//        list = averageResultService.getAvgResultCPUApp(cpu, app_name);
+//
+//
+//        if (list == null || list.size() == 0)
+//            return multiChartTableResponse;
+//
+//        Set<Integer> nodes = new LinkedHashSet<>();
+//        Set<String> bms = new LinkedHashSet<>();
+//
+//        for (AverageResult avg : list) {
+//            nodes.add(avg.getNodes());
+//            bms.add(avg.getBmName());
+//        }
+//
+//        List<String> bmlist = bms.stream().collect(Collectors.toList());
+//        List<Integer> nodelist = nodes.stream().collect(Collectors.toList());
+//
+//        List<Map<String, Double>> resList = new ArrayList<>();
+//
+//        Map<String, Double> res = null;
+//
+//        List<String> nodesList = new ArrayList<>();
+//
+//        for (Integer n : nodes) {
+//            res = new LinkedHashMap<>();
+//            nodesList.add(n.toString());
+//            for (AverageResult a : list) {
+//                if (a.getNodes() == n) {
+//
+//                    res.put(a.getBmName(), a.getAvgResult());
+//                }
+//            }
+//            resList.add(res);
+//        }
+//
+//
+//        List<Map<String, Double>> newResList = new ArrayList<>();
+//
+//        for (Map<String, Double> e : resList) {
+//
+//            Map<String, Double> map = new LinkedHashMap<>();
+//            for (String bm : bmlist) {
+//                if (!e.containsKey(bm)) {
+//                    map.put(bm, 0.0);
+//                } else {
+//                    map.put(bm, e.get(bm));
+//                }
+//            }
+//            newResList.add(map);
+//
+//        }
+//
+//
+//        resListFinal = new ArrayList<>();
+//        if(nodesList.size()>1) {
+//            Map<String, Double> firstResult = new LinkedHashMap<>();
+//            firstResult.putAll(newResList.get(0));
+//
+//            Map<String, String> temp = new LinkedHashMap<>();
+//            temp.put("", nodesList.get(0));
+//
+//            for (Map.Entry<String, Double> d : newResList.get(0).entrySet()) {
+//
+//                if (Double.compare(d.getValue(), 0.0) > 0)
+//                    temp.put(d.getKey(), "1.0");
+//            }
+//            resListFinal.add(temp);
+//
+//            newResList.remove(0);
+//
+//            int i = 1;
+//
+//            for (Map<String, Double> lis : newResList) {
+//
+//                temp = new LinkedHashMap<>();
+//                temp.put("", nodesList.get(i));
+//                for (Map.Entry<String, Double> d : lis.entrySet()) {
+//                    if (Double.compare(firstResult.get(d.getKey()), 0.0) > 0) {
+//                        if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("LOWER")) {
+//                            double d1 = util.round(firstResult.get(d.getKey()) / d.getValue(), 3);
+//                            temp.put(d.getKey(), String.valueOf(d1));
+//
+//                        } else if (averageResultRestController.getLowerHigher(app_name.trim().toLowerCase()).equals("HIGHER")) {
+//                            double d1 = util.round(d.getValue() / firstResult.get(d.getKey()), 3);
+//                            temp.put(d.getKey(), String.valueOf(d1));
+//                        }
+//                    }
+//
+//                }
+//                resListFinal.add(temp);
+//                i++;
+//            }
+//
+//            List<String> bmlistFinal = new ArrayList<>();
+//
+//            for (Map.Entry<String, String> bm : resListFinal.get(0).entrySet()) {
+//                bmlistFinal.add(bm.getKey());
+//            }
+//
+//            multiChartTableResponse = MultiChartTableResponse.builder().appName(getAppName(app_name)).nodeLabel(bmlistFinal).scalingResultData(resListFinal).build();
+//        }
+//        return multiChartTableResponse;
+//    }
 
 
     @RequestMapping(value = "/getNodesCount", method = RequestMethod.GET)

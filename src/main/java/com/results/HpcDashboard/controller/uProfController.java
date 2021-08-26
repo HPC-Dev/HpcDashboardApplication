@@ -202,7 +202,7 @@ public class uProfController {
     @GetMapping("/uProfRadarChart")
     public UProfOutput getuProfData(String[] cpuList, String[] typeList) {
 
-        System.out.println(environment.getProperty("workload.name"));
+        //System.out.println(environment.getProperty("workload.name"));
         UProfOutput uProfOutput = null;
         List<UProfCalculated> uProfCalculated = new ArrayList<>();
         List<UProfDataset> uProfDatasets = new ArrayList<>();

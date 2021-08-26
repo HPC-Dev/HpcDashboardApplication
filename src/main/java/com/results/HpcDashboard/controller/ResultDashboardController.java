@@ -79,7 +79,7 @@ public class ResultDashboardController {
 //                }
 //
 //                if (resultData.length != 16) {
-//                    redirectAttributes.addFlashAttribute("failure", "Please provide date in the below format (Job Id, App_Name, Benchmark, Nodes, Cores, node_name, Result, CPU, OS, BIOS, Cluster, User, Platform, cpu_generation, Run_type, Workload)");
+//                    redirectAttributes.addFlashAttribute("failure", "Please provide date in the below format (Job Id, App_Name, Benchmark, Nodes, Cores, node_name, Result, CPU, OS, BIOS, Cluster, User, Platform, cpu_generation, Run_type, Category)");
 //                    return "redirect:/result";
 //                }
 //                try {
@@ -182,7 +182,7 @@ public class ResultDashboardController {
         List<String> platform_list = resultService.getPlatform();
         List<String> cpu_gen_list = resultService.getCpuGen();
         List<String> run_type_list = resultService.getRunType();
-        List<String> workload_list = resultService.getWorkload();
+        List<String> category_list = resultService.getCategory();
 
 
         model.addAttribute("cpus", cpu_list);
@@ -196,7 +196,7 @@ public class ResultDashboardController {
         model.addAttribute("platforms", platform_list);
         model.addAttribute("cpugens", cpu_gen_list);
         model.addAttribute("runtypes", run_type_list);
-        model.addAttribute("workloads", workload_list);
+        model.addAttribute("categories", category_list);
 
         return "resultDashboard";
     }
@@ -213,7 +213,7 @@ public class ResultDashboardController {
         List<Integer> node_list = resultService.getNodes();
         List<String> run_type_list = resultService.getRunType();
         List<Integer> run_count_list = averageResultService.getRunCount();
-        List<String> workload_list = resultService.getWorkload();
+        List<String> category_list = resultService.getCategory();
 
 
         model.addAttribute("segments",segments);
@@ -224,41 +224,11 @@ public class ResultDashboardController {
         model.addAttribute("bms", bm_list);
         model.addAttribute("runtypes", run_type_list);
         model.addAttribute("runCounts", run_count_list);
-        model.addAttribute("workloads", workload_list);
+        model.addAttribute("categories", category_list);
 
         return "resultAverage";
     }
 
-
-    @GetMapping("/dashboardO")
-    public String showDashboardN(Model model) {
-
-        List<String> cpu_list = resultService.getCpu();
-        List<String> app_list = resultService.getApp();
-        List<String> bm_list = null;
-        List<Integer> node_list = resultService.getNodes();
-        List<String> os_list = resultService.getOS();
-        List<String> bios_list = resultService.getBIOS();
-        List<String> cluster_list = resultService.getCluster();
-        List<String> user_list = resultService.getUser();
-        List<String> platform_list = resultService.getPlatform();
-        List<String> cpu_gen_list = resultService.getCpuGen();
-        List<String> run_type_list = resultService.getRunType();
-
-        model.addAttribute("cpus", cpu_list);
-        model.addAttribute("apps", app_list);
-        model.addAttribute("nodes", node_list);
-        model.addAttribute("bms", bm_list);
-        model.addAttribute("os", os_list);
-        model.addAttribute("bios", bios_list);
-        model.addAttribute("clusters", cluster_list);
-        model.addAttribute("users", user_list);
-        model.addAttribute("platforms", platform_list);
-        model.addAttribute("cpugens", cpu_gen_list);
-        model.addAttribute("runtypes", run_type_list);
-
-        return "resultDashboardO";
-    }
 
     @RequestMapping(value = "/cpusGen", method = RequestMethod.GET)
     public @ResponseBody

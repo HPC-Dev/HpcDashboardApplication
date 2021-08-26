@@ -105,12 +105,12 @@
                 </select>
             </div>
 
-            <div id="workload" class="dropdown" style="margin-top:10px">
-                <select class="form-control form-control-sm" id="workloadDrop" name="cpuDrop">
-                    <option selected="true" disabled="disabled">-- Workload --</option>
-                    <option th:each="workload : ${workloads}"
-                            th:value="${workload}"
-                            th:text="${workload}"></option>
+            <div id="category" class="dropdown" style="margin-top:10px">
+                <select class="form-control form-control-sm" id="categoryDrop" name="cpuDrop">
+                    <option selected="true" disabled="disabled">-- Category --</option>
+                    <option th:each="category : ${categories}"
+                            th:value="${category}"
+                            th:text="${category}"></option>
                 </select>
             </div>
 
@@ -142,7 +142,7 @@
                         <th>Variance</th>
                         <th>Run count</th>
                         <th>Run type</th>
-                        <th>Workload</th>
+                        <th>Category</th>
                     </tr>
                     </thead>
                 </table>

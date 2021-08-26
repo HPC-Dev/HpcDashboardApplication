@@ -23,10 +23,10 @@ public class HeatMapService {
     HeatMapRepo heatMapRepo;
 
     @Transactional
-    public void updateHeatResult(String category, String isv, String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,double perfPerDollar,double perfPerWatt , int count, String runType, String workload) {
+    public void updateHeatResult(String segment, String isv, String cpu_sku, int nodes, String bm_name,double avg,double perCorePerf,double perfPerDollar,double perfPerWatt , int count, String runType, String category) {
         if(cpu_sku == "" || cpu_sku.equals(null) || bm_name == "" || bm_name.equals(null))
             return;
-        heatMapRepo.updateHeatResult(category,isv, bm_name,cpu_sku,nodes,avg, perCorePerf,perfPerDollar,perfPerWatt, count, runType, workload);
+        heatMapRepo.updateHeatResult(segment,isv, bm_name,cpu_sku,nodes,avg, perCorePerf,perfPerDollar,perfPerWatt, count, runType, category);
     }
 
     public List<HeatMap> getHeatMapResults(String bm_name) {
@@ -45,10 +45,10 @@ public class HeatMapService {
     public void insertHeatResult(HeatMap heatResult) {
         if (heatResult== null || heatResult.getCpuSku() == "" || heatResult.getCpuSku().equals(null) || heatResult.getBmName() == "" || heatResult.getBmName().equals(null) )
             return;
-        HeatMap heatMap = HeatMap.builder().category(heatResult.getCategory()).cores(heatResult.getCores()).perCorePerf(heatResult.getPerCorePerf())
+        HeatMap heatMap = HeatMap.builder().segment(heatResult.getSegment()).cores(heatResult.getCores()).perCorePerf(heatResult.getPerCorePerf())
                 .perfPerDollar(heatResult.getPerfPerDollar()).perfPerWatt(heatResult.getPerfPerWatt()).isv(heatResult.getIsv())
                 .appName(heatResult.getAppName().trim()).avgResult(heatResult.getAvgResult()).bmName(heatResult.getBmName().trim())
-                .cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runCount(heatResult.getRunCount()).runType(heatResult.getRunType()).workload(heatResult.getWorkload()).build();
+                .cpuSku(heatResult.getCpuSku().trim()).nodes(heatResult.getNodes()).runCount(heatResult.getRunCount()).runType(heatResult.getRunType()).category(heatResult.getCategory()).build();
         heatMapRepo.save(heatMap);
     }
 
@@ -89,9 +89,13 @@ public class HeatMapService {
     }
 
 
-    public List<HeatMap> getHeatMapData(String cpu, String type) {
+    public List<HeatMap> getHeatMapData(String cpu, String type, String[] categories) {
         List<HeatMap> list = null;
+
+        if(categories == null)
         list = heatMapRepo.findHeatMapData(cpu,type);
+        else
+        list = heatMapRepo.findHeatMapDataCategories(cpu,type,categories);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
@@ -100,9 +104,9 @@ public class HeatMapService {
 
     }
 
-    public List<HeatMap> getHeatMapData(String cpu, String type, String category) {
+    public List<HeatMap> getHeatMapData(String cpu, String type, String segment) {
         List<HeatMap> list = null;
-        list = heatMapRepo.findHeatMapData(cpu,type, category);
+        list = heatMapRepo.findHeatMapData(cpu,type, segment);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
@@ -111,9 +115,9 @@ public class HeatMapService {
 
     }
 
-    public List<HeatMap> getHeatMapDataISV(String cpu, String type, String isv, String category) {
+    public List<HeatMap> getHeatMapDataISV(String cpu, String type, String isv, String segment) {
         List<HeatMap> list = null;
-        list = heatMapRepo.findHeatMapDataISV(cpu,type, isv, category);
+        list = heatMapRepo.findHeatMapDataISV(cpu,type, isv, segment);
 
         if(list ==null){
             return Collections.EMPTY_LIST;
@@ -122,9 +126,13 @@ public class HeatMapService {
 
     }
 
-    public List<HeatMap> getHeatMapDataISV(String cpu, String type, String isv) {
+    public List<HeatMap> getHeatMapDataISV(String cpu, String type, String isv, String[] categories) {
         List<HeatMap> list = null;
-        list = heatMapRepo.findHeatMapDataISV(cpu,type, isv);
+
+        if(categories == null)
+            list = heatMapRepo.findHeatMapDataISV(cpu,type, isv);
+        else
+            list = heatMapRepo.findHeatMapDataISVCategories(cpu,type, isv,categories);
 
         if(list ==null){
             return Collections.EMPTY_LIST;

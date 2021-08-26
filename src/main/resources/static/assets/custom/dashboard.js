@@ -93,7 +93,7 @@ table = $('table#ajax').DataTable({
             }
         },
         {
-           data: 'workload'
+           data: 'category'
         }
 ],
 });
@@ -246,9 +246,9 @@ function addDateFilter() {
 }
 
 
-$('select#workloadDrop').change(function() {
+$('select#categoryDrop').change(function() {
     var filter = '';
-    $('select#workloadDrop option:selected').each(function() {
+    $('select#categoryDrop option:selected').each(function() {
         filter += $(this).text() + "+";
     });
 
@@ -256,10 +256,6 @@ $('select#workloadDrop').change(function() {
     table.column(16).search(filter).draw();
 });
 
-//$('#showButton').on('click', function(){
-//        $('#ajax').DataTable().destroy();
-//        $('#ajax tbody').empty();
-//});
 
 $('#clearButton').on('click', function(){
 

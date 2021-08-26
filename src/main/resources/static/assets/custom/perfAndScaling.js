@@ -29,7 +29,7 @@ $("#p1").hide();
 
 var cpus = []
 var typeVal;
-var workloads = [];
+var categories = [];
 var flag;
 
 $('#typeDrop').change(typeChange);
@@ -40,31 +40,31 @@ $("#app").on("change", getScalingChart);
 
 window.onload = function() {
 
-    $.getJSON("/workloads", {
+    $.getJSON("/categories", {
         ajax: 'true'
     }, function(data) {
         var len = data.length;
 
         if (len > 1) {
 
-            $("#workloadCheckBox").show();
+            $("#categoryCheckBox").show();
         } else {
 
-            $("#workloadCheckBox").hide();
+            $("#categoryCheckBox").hide();
         }
         var html = '';
 
         for (var i = 0; i < len; i++) {
 
-            html += ' <div id="workloadCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+            html += ' <div id="categoryCheckBox" class="custom-control custom-checkbox custom-control-inline">';
 
-            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="workloadCheckBoxChange(\'' + data[i] + '\')" />' +
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="categoryCheckBoxChange(\'' + data[i] + '\')" />' +
                 '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
 
 
             html += '</div>';
         }
-        $('#workloadCheckBox').append(html);
+        $('#categoryCheckBox').append(html);
 
     });
 
@@ -73,15 +73,15 @@ window.onload = function() {
 };
 
 
-function workloadCheckBoxChange(workload) {
+function categoryCheckBoxChange(category) {
 
-    if (workload) {
+    if (category) {
 
-        var index = workloads.indexOf(workload);
+        var index = categories.indexOf(category);
         if (index > -1) {
-            workloads.splice(index, 1);
+            categories.splice(index, 1);
         } else {
-            workloads.push(workload);
+            categories.push(category);
         }
     }
 
@@ -93,10 +93,10 @@ function workloadCheckBoxChange(workload) {
 function cpuDropDownLoad() {
 
     var params = {};
-    params.workloads = workloads;
+    params.categories = categories;
     var preCpu = $("#cpuDrop option:selected").val();
 
-    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+    $.getJSON("/cpusByCategory", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU --</option>';
 

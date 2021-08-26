@@ -20,7 +20,7 @@
 
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/multiCPUCharts' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/multiCPUCharts}">Multi CPU Charts</a></li>
 
-                    <li class="nav-item"  th:classappend="${#request.requestURI == '/singleCPUResult' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/singleCPUResult}">Performance and Scaling</a></li>
+                    <li class="nav-item"  th:classappend="${#request.requestURI == '/perfAndScaling' ? 'active':''}"><a class="nav-link" href="#" th:href="@{/perfAndScaling}">Performance and Scaling</a></li>
 
 
                     <li class="nav-item"  th:classappend="${#request.requestURI == '/uProfRadar' ? 'active':''}"><a class="nav-link" href="#" th:href="@{uProfRadar}">uProf Radar Chart</a></li>
@@ -54,9 +54,9 @@
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
                             <a class="dropdown-item" href="#" th:href="@{/dashboard}">Export raw</a>
                             <a class="dropdown-item" href="#" th:href="@{/averagedResults}">Export aggregated</a>
-                            <!--                            <a class="dropdown-item" href="#" th:href="@{/singleCPUResult}" >Single CPU Result </a>-->
                             <a class="dropdown-item" href="#" th:href="@{/partComparison}">Part Comparison</a>
                             <a class="dropdown-item" href="#" th:href="@{/scalingComparison}">Scaling Comparison</a>
+
                         </div>
                     </li>
 
@@ -64,16 +64,24 @@
 
 
 
-                    <li class="nav-item dropdown" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" th:classappend="|${#request.requestURI == '/application' ? 'active':''} ${#request.requestURI == '/benchmark' ? 'active':''} ${#request.requestURI == '/cpu' ? 'active':''} ${#request.requestURI == '/processorInsert' ? 'active':''} ${#request.requestURI == '/appCategoryInsert' ? 'active':''} ${#request.requestURI == '/appMetricInsert' ? 'active':''} ${#request.requestURI == '/userList' ? 'active':''}|" >
+                    <li class="nav-item dropdown" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" th:classappend="|${#request.requestURI == '/application' ? 'active':''} ${#request.requestURI == '/benchmark' ? 'active':''} ${#request.requestURI == '/cpu' ? 'active':''}  ${#request.requestURI == '/processorInsert' ? 'active':''} ${#request.requestURI == '/appCategoryInsert' ? 'active':''} ${#request.requestURI == '/appMetricInsert' ? 'active':''} ${#request.requestURI == '/userList' ? 'active':''}|" >
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">WIP</a>
                         <div class="dropdown-menu dropdown-content" style="background-color: #343A40;">
+
+                            <a class="dropdown-item" href="#" th:href="@{/appCategoryInsert}">App Category Insert </a>
+                            <a class="dropdown-item" href="#" th:href="@{/appMetricInsert}">App Metric Insert </a>
+                            <a class="dropdown-item" href="#" th:href="@{/processorInsert}">Processor Insert</a>
+
+                            <a class="dropdown-item" href="#" th:href="@{/userList}">User List </a>
+
+                            <div class="dropdown-divider"></div>
+
                             <a class="dropdown-item" href="#" th:href="@{/application}">Applications</a>
                             <a class="dropdown-item" href="#" th:href="@{/benchmark}">Benchmarks</a>
                             <a class="dropdown-item" href="#" th:href="@{/cpu}">CPU</a>
-                            <a class="dropdown-item" href="#" th:href="@{/processorInsert}">Processor Insert</a>
-                            <a class="dropdown-item" href="#" th:href="@{/appCategoryInsert}">App Category Insert </a>
-                            <a class="dropdown-item" href="#" th:href="@{/appMetricInsert}">App Metric Insert </a>
-                            <a class="dropdown-item" href="#" th:href="@{/userList}">User List </a>
+
+
+
                         </div>
                     </li>
 

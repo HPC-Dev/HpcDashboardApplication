@@ -5,20 +5,19 @@ use results_dashboard;
 show tables;
 
 
-select * from average_result where run_type="baseline";
-
-ALTER TABLE average_result DROP COLUMN perf_per_core_hib;
-
-select * from heat_map;
-
-select * from results where job_id ="1266a";
-
-#update heat_map set workload="hpc";
-
-select * from heat_map where run_type="latest_aocl";
+select * from average_result where segment="hpc";
 
 
-select * from average_result where run_type="latest_aocl";
+select * from heat_map where segment is null;
+
+select * from results;
+
+select * from heat_map where segment is not null and cpu_sku="7763_48C";
+
+
+select * from average_result;
+
+select * from app_category;
 
 
 
@@ -27,6 +26,8 @@ select * from average_result where run_type="latest_aocl";
 -- drop table results;
 
 -- drop table heat_map;
+
+
 
 
 

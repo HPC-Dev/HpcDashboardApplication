@@ -11,8 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
-public class Category {
-    String Category;
+public class Segment {
+    String Segment;
     double uplift;
     double per_Core_Uplift;
     double per_Dollar_Uplift;

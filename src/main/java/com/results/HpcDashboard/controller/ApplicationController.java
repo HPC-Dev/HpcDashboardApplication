@@ -94,7 +94,7 @@ public class ApplicationController {
         {
             for(HeatMap heatMap: heatMapResult)
             {
-                heatMapService.updateHeatResult(appCategory.getCategory(),appCategory.getIsv(), heatMap.getCpuSku(), heatMap.getNodes(), heatMap.getBmName().trim().toLowerCase(), heatMap.getAvgResult(),heatMap.getPerCorePerf(),heatMap.getPerfPerDollar(),heatMap.getPerfPerWatt(), heatMap.getRunCount(), heatMap.getRunType(), heatMap.getWorkload());
+                heatMapService.updateHeatResult(appCategory.getSegment(),appCategory.getIsv(), heatMap.getCpuSku(), heatMap.getNodes(), heatMap.getBmName().trim().toLowerCase(), heatMap.getAvgResult(),heatMap.getPerCorePerf(),heatMap.getPerfPerDollar(),heatMap.getPerfPerWatt(), heatMap.getRunCount(), heatMap.getRunType(), heatMap.getCategory());
             }
         }
 

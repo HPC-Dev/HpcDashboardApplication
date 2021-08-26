@@ -167,7 +167,6 @@ public class AverageResultRestController {
                         if (Double.compare(val1, val2) == 0) {
                             relativeValue = 1;
                         } else {
-                            Double d = val1/val2;
                             relativeValue = util.round( (val1 / val2), 3);
                         }
                     }
@@ -519,13 +518,13 @@ public class AverageResultRestController {
     }
 
 
-    private void getHeatMapNodeResult(String cpu1, String type1, String cpu2, String type2, String cpu3, String type3, String cpu4, String type4, LinkedHashSet<String> category, Map<String, Double> bmResList1, Map<String, Double> bmResList2, Map<String, PerCore> perCoreListFirst, Map<String, PerCore> perCoreListSecond, Map<String, Double> perDollarFirst, Map<String, Double> perDollarSecond, Map<String, Double> perWattFirst, Map<String, Double> perWattSecond, List<Category> categories, String isvSelected) {
+    private void getHeatMapNodeResult(String cpu1, String type1, String cpu2, String type2, String cpu3, String type3, String cpu4, String type4, LinkedHashSet<String> segment, Map<String, Double> bmResList1, Map<String, Double> bmResList2, Map<String, PerCore> perCoreListFirst, Map<String, PerCore> perCoreListSecond, Map<String, Double> perDollarFirst, Map<String, Double> perDollarSecond, Map<String, Double> perWattFirst, Map<String, Double> perWattSecond, List<Segment> segments, String isvSelected) {
 
         List<List<HeatMap>> filteredLists = null;
-        for (String cat : category) {
+        for (String cat : segment) {
 
-            Category category1 = new Category();
-            category1.setCategory(cat);
+            Segment segment1 = new Segment();
+            segment1.setSegment(cat);
 
             double catAvg = 0;
             double appAvg = 0;
@@ -566,7 +565,7 @@ public class AverageResultRestController {
             Set<String> isv = new LinkedHashSet<>();
 
             for (HeatMap heatMap : list5) {
-                if (cat.contains(heatMap.getCategory())) {
+                if (cat.contains(heatMap.getSegment())) {
                     isv.add(heatMap.getIsv());
                 }
             }
@@ -865,27 +864,27 @@ public class AverageResultRestController {
                 isv1.setApp(appList);
                 isvList.add(isv1);
             }
-            category1.setIsvList(isvList);
-            category1.setUplift(catAvg);
-            category1.setPer_Core_Uplift(perCoreCatAvg);
-            category1.setPer_Dollar_Uplift(perDollarCatAvg);
-            category1.setPer_Watt_Uplift(perWattCatAvg);
-            categories.add(category1);
+            segment1.setIsvList(isvList);
+            segment1.setUplift(catAvg);
+            segment1.setPer_Core_Uplift(perCoreCatAvg);
+            segment1.setPer_Dollar_Uplift(perDollarCatAvg);
+            segment1.setPer_Watt_Uplift(perWattCatAvg);
+            segments.add(segment1);
         }
 
     }
 
-    private List<HeatMapResult> getConsolidatedResult(List<Category> categories, List<HeatMapResult> resList) {
+    private List<HeatMapResult> getConsolidatedResult(List<Segment> segments, List<HeatMapResult> resList) {
 
         HeatMapResult h;
         HashMap<String, Double> perCorePercentage = new HashMap<>();
         HashMap<String, Double> perDollarPercentage = new HashMap<>();
         HashMap<String, Double> perWattPercentage = new HashMap<>();
 
-        for (Category c : categories) {
+        for (Segment c : segments) {
             h = new HeatMapResult();
 
-            h.setCategory(c.getCategory());
+            h.setSegment(c.getSegment());
 
 
             if (c.getUplift() > 0.0) {
@@ -1013,7 +1012,7 @@ public class AverageResultRestController {
     }
 
     @GetMapping("/isvDrop")
-    public LinkedHashSet<String>  getISVDropDown(String[] cpuList, String[] typeList, String[] workloads) {
+    public LinkedHashSet<String>  getISVDropDown(String[] cpuList, String[] typeList, String[] categories) {
         LinkedHashSet<String>  isvs = new LinkedHashSet<>();
 
         String cpu1 = cpuList[0];
@@ -1030,17 +1029,17 @@ public class AverageResultRestController {
         if (cpuList.length > 2 && typeList.length > 2) {
             cpu3 = cpuList[2];
             type3 = typeList[2];
-            list3 = heatMapService.getHeatMapData(cpu3, type3);
+            list3 = heatMapService.getHeatMapData(cpu3, type3, categories);
 
         }
         if (cpuList.length > 3 && typeList.length > 3) {
             cpu4 = cpuList[3];
             type4 = typeList[3];
-            list4 = heatMapService.getHeatMapData(cpu4, type4);
+            list4 = heatMapService.getHeatMapData(cpu4, type4,categories);
         }
 
-        List<HeatMap> list1 = heatMapService.getHeatMapData(cpu1, type1);
-        List<HeatMap> list2 = heatMapService.getHeatMapData(cpu2, type2);
+        List<HeatMap> list1 = heatMapService.getHeatMapData(cpu1, type1,categories);
+        List<HeatMap> list2 = heatMapService.getHeatMapData(cpu2, type2,categories);
 
         if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)
             return isvs;
@@ -1059,9 +1058,9 @@ public class AverageResultRestController {
     }
 
     @GetMapping("/heatMap")
-    public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList, String isv) {
+    public HeatMapOutput getHeatMapData(String[] cpuList, String[] typeList, String[] categories, String isv) {
         HeatMapOutput heatMapOutput = new HeatMapOutput();
-        List<Category> categories = new ArrayList<>();
+        List<Segment> segments = new ArrayList<>();
         List<HeatMapResult> resList = new ArrayList<>();
         String cpu1 = cpuList[0];
         String cpu2 = cpuList[1];
@@ -1079,22 +1078,22 @@ public class AverageResultRestController {
         if (cpuList.length > 2 && typeList.length > 2) {
             cpu3 = cpuList[2];
             type3 = typeList[2];
-            list3 = heatMapService.getHeatMapData(cpu3, type3);
+            list3 = heatMapService.getHeatMapData(cpu3, type3,categories);
 
         }
         if (cpuList.length > 3 && typeList.length > 3) {
             cpu4 = cpuList[3];
             type4 = typeList[3];
-            list4 = heatMapService.getHeatMapData(cpu4, type4);
+            list4 = heatMapService.getHeatMapData(cpu4, type4,categories);
         }
 
         if(isv.equals("All")) {
-            list1 = heatMapService.getHeatMapData(cpu1, type1);
-            list2 = heatMapService.getHeatMapData(cpu2, type2);
+            list1 = heatMapService.getHeatMapData(cpu1, type1,categories);
+            list2 = heatMapService.getHeatMapData(cpu2, type2,categories);
         }
         else {
-            list1 = heatMapService.getHeatMapDataISV(cpu1, type1, isv);
-            list2 = heatMapService.getHeatMapDataISV(cpu2, type2, isv);
+            list1 = heatMapService.getHeatMapDataISV(cpu1, type1, isv,categories);
+            list2 = heatMapService.getHeatMapDataISV(cpu2, type2, isv,categories);
         }
 
 
@@ -1113,8 +1112,8 @@ public class AverageResultRestController {
         list4 = filteredLists.get(3);
 
 
-        LinkedHashSet<String> category = list1.stream()
-                .map(HeatMap::getCategory)
+        LinkedHashSet<String> segment = list1.stream()
+                .map(HeatMap::getSegment)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
         if (list1 == null || list1.size() == 0 || list2 == null || list2.size() == 0)
@@ -1202,19 +1201,19 @@ public class AverageResultRestController {
             perWattListFourth.put(h.getBmName(), perfPerWatt);
         }
 
-        List<Category> categories1 = new ArrayList<>();
-        List<Category> categories2 = new ArrayList<>();
+        List<Segment> segments1 = new ArrayList<>();
+        List<Segment> segments2 = new ArrayList<>();
         List<HeatMapResult> resList1 = new ArrayList<>();
         List<HeatMapResult> resList2 = new ArrayList<>();
 
 
-        getHeatMapNodeResult(cpu1, type1, cpu2, type2, cpu3, type3, cpu4, type4, category, bmResList1, bmResList2, perCoreListFirst, perCoreListSecond, perDollarListFirst, perDollarListSecond, perWattListFirst, perWattListSecond, categories, isv);
-        getHeatMapNodeResult(cpu1, type1, cpu3, type3, cpu2, type2, cpu4, type4, category, bmResList1, bmResList3, perCoreListFirst, perCoreListThird, perDollarListFirst, perDollarListThird, perWattListFirst, perWattListThird, categories1, isv);
-        getHeatMapNodeResult(cpu1, type1, cpu4, type4, cpu2, type2, cpu3, type3, category, bmResList1, bmResList4, perCoreListFirst, perCoreListFourth, perDollarListFirst, perDollarListFourth, perWattListFirst, perWattListFourth, categories2, isv);
+        getHeatMapNodeResult(cpu1, type1, cpu2, type2, cpu3, type3, cpu4, type4, segment, bmResList1, bmResList2, perCoreListFirst, perCoreListSecond, perDollarListFirst, perDollarListSecond, perWattListFirst, perWattListSecond, segments, isv);
+        getHeatMapNodeResult(cpu1, type1, cpu3, type3, cpu2, type2, cpu4, type4, segment, bmResList1, bmResList3, perCoreListFirst, perCoreListThird, perDollarListFirst, perDollarListThird, perWattListFirst, perWattListThird, segments1, isv);
+        getHeatMapNodeResult(cpu1, type1, cpu4, type4, cpu2, type2, cpu3, type3, segment, bmResList1, bmResList4, perCoreListFirst, perCoreListFourth, perDollarListFirst, perDollarListFourth, perWattListFirst, perWattListFourth, segments2, isv);
 
-        resList = getConsolidatedResult(categories, resList);
-        resList1 = getConsolidatedResult(categories1, resList1);
-        resList2 = getConsolidatedResult(categories2, resList2);
+        resList = getConsolidatedResult(segments, resList);
+        resList1 = getConsolidatedResult(segments1, resList1);
+        resList2 = getConsolidatedResult(segments2, resList2);
 
 
         for (int i = 0; i < resList.size(); i++) {
@@ -1248,7 +1247,7 @@ public class AverageResultRestController {
 
         List<String> columns = new ArrayList<>();
 
-        columns.add("category");
+        columns.add("segment");
         columns.add("isv");
         columns.add("application");
         columns.add("benchmark");

@@ -6,7 +6,7 @@ Chart.defaults.global.defaultFontFamily = 'Verdana';
 var app;
 var cpuList = [];
 var typeList = [];
-var workloads = [];
+var categories = [];
 var cpuData = {};
 
 function clearHtml() {
@@ -19,7 +19,7 @@ function clearHtml() {
 $('#clearButton').on('click', function() {
 
     $('input[type=checkbox]').prop('checked', false);
-    workloads.length = 0;
+    categories.length = 0;
     cpuList.length = 0;
     typeList.length = 0;
     $('#cpuDrop1').val('');
@@ -33,37 +33,38 @@ $('#clearButton').on('click', function() {
     $('#isvDrop').val('All');
     clearHtml();
     $('#tableHeatMap').html('');
+     cpuDropDownLoad();
 
 });
 
 
 window.onload = function() {
 
-    $.getJSON("/workloads", {
+    $.getJSON("/categories", {
         ajax: 'true'
     }, function(data) {
         var len = data.length;
 
         if (len > 1) {
 
-            $("#workloadCheckBox").show();
+            $("#categoryCheckBox").show();
         } else {
 
-            $("#workloadCheckBox").hide();
+            $("#categoryCheckBox").hide();
         }
         var html = '';
 
         for (var i = 0; i < len; i++) {
 
-            html += ' <div id="workloadCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+            html += ' <div id="categoryCheckBox" class="custom-control custom-checkbox custom-control-inline">';
 
-            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="workloadCheckBoxChange(\'' + data[i] + '\')" />' +
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="categoryCheckBoxChange(\'' + data[i] + '\')" />' +
                 '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
 
 
             html += '</div>';
         }
-        $('#workloadCheckBox').append(html);
+        $('#categoryCheckBox').append(html);
 
     });
 
@@ -72,15 +73,15 @@ window.onload = function() {
 };
 
 
-function workloadCheckBoxChange(workload) {
+function categoryCheckBoxChange(category) {
 
-    if (workload) {
+    if (category) {
 
-        var index = workloads.indexOf(workload);
+        var index = categories.indexOf(category);
         if (index > -1) {
-            workloads.splice(index, 1);
+            categories.splice(index, 1);
         } else {
-            workloads.push(workload);
+            categories.push(category);
         }
     }
 
@@ -90,14 +91,14 @@ function workloadCheckBoxChange(workload) {
 function cpuDropDownLoad() {
 
     var params = {};
-    params.workloads = workloads;
+    params.categories = categories;
     var preCpu1 = $("#cpuDrop1 option:selected").val();
     var preCpu2 = $("#cpuDrop2 option:selected").val();
     var preCpu3 = $("#cpuDrop3 option:selected").val();
     var preCpu4 = $("#cpuDrop4 option:selected").val();
 
 
-    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+    $.getJSON("/cpusByCategory", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU1 --</option>';
         html += '<option label=" "  value=" " >  </option>';
@@ -155,7 +156,7 @@ function cpuDropDownLoad() {
 
     });
 
-    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+    $.getJSON("/cpusByCategory", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU2 --</option>';
         html += '<option label=" "  value=" " >  </option>';
@@ -192,7 +193,7 @@ function cpuDropDownLoad() {
 
     });
 
-    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+    $.getJSON("/cpusByCategory", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU3 --</option>';
         html += '<option label=" "  value=" " >  </option>';
@@ -229,7 +230,7 @@ function cpuDropDownLoad() {
 
     });
 
-    $.getJSON("/cpusByWorkload", $.param(params, true), function(data) {
+    $.getJSON("/cpusByCategory", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- CPU4 --</option>';
         html += '<option label=" "  value=" " >  </option>';
@@ -472,7 +473,7 @@ $("#isv").on("change", getData);
 function captureCPUsTypes() {
 
     var params = {};
-    params.workloads = workloads;
+    params.categories = categories;
     cpuList = [];
     typeList = [];
 
@@ -540,7 +541,7 @@ function getISV() {
         var params = {};
         params.cpuList = cpuList;
         params.typeList = typeList;
-        params.workloads = workloads;
+        params.categories = categories;
 
         var preISV = $("#isvDrop option:selected").val();
 
@@ -580,6 +581,7 @@ function getData() {
         var params = {};
         params.cpuList = cpuList;
         params.typeList = typeList;
+        params.categories = categories;
         params.isv = isv;
 
 
@@ -711,7 +713,7 @@ function generateRow(columns, rowData) {
             val = '';
         }
 
-        if (column === 'category' && rowData[column] != null) {
+        if (column === 'segment' && rowData[column] != null) {
             row = [];
             row = ['<tr style="border: 1px solid black;border-collapse: collapse"; bgcolor="#78909C">']
             flag = 1;

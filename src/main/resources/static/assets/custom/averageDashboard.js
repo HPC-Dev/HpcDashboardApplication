@@ -105,7 +105,7 @@ function dataTable() {
                 data: 'runType'
             },
             {
-                data: 'workload'
+                data: 'category'
             }
         ],
     });
@@ -214,9 +214,9 @@ $('select#runCountDrop').change(function() {
     table.column(11).search(filter).draw();
 });
 
-$('select#workloadDrop').change(function() {
+$('select#categoryDrop').change(function() {
     var filter = '';
-    $('select#workloadDrop option:selected').each(function() {
+    $('select#categoryDrop option:selected').each(function() {
         filter += $(this).text() + "+";
     });
 

@@ -5,7 +5,7 @@ var typeVal;
 var flag;
 var cpuList = [];
 var runTypes = [];
-var workloads = [];
+var categories = [];
 var store = {};
 
 function addToStore(key, value) {
@@ -26,7 +26,7 @@ $("#appDrop").on("change", appChange);
 $('#clearButton').on('click', function() {
 
     $('input[type=checkbox]').prop('checked', false);
-    workloads.length = 0;
+    categories.length = 0;
     clearScreen();
     appDropDownLoad();
 });
@@ -48,30 +48,30 @@ function clearScreen() {
 window.onload = function() {
 
 
-    $.getJSON("/workloads", {
+    $.getJSON("/categories", {
         ajax: 'true'
     }, function(data) {
         var len = data.length;
 
         if (len > 1) {
 
-            $("#workloadCheckBox").show();
+            $("#categoryCheckBox").show();
         } else {
 
-            $("#workloadCheckBox").hide();
+            $("#categoryCheckBox").hide();
         }
         var html = '';
 
         for (var i = 0; i < len; i++) {
-            html += ' <div id="workloadCheckBox" class="custom-control custom-checkbox custom-control-inline">';
+            html += ' <div id="categoryCheckBox" class="custom-control custom-checkbox custom-control-inline">';
 
-            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="workloadCheckBoxChange(\'' + data[i] + '\')" />' +
+            html += '<input class="custom-control-input" type="checkbox" name="type" id="' + data[i] + '" value="' + data[i] + ' "   onchange="categoryCheckBoxChange(\'' + data[i] + '\')" />' +
                 '<label class="custom-control-label" text="' + data[i] + '" for="' + data[i] + '" >' + data[i] + '</label>';
 
 
             html += '</div>';
         }
-        $('#workloadCheckBox').append(html);
+        $('#categoryCheckBox').append(html);
 
     });
 
@@ -82,20 +82,20 @@ window.onload = function() {
 
 
 
-function workloadCheckBoxChange(workload) {
+function categoryCheckBoxChange(category) {
 
     $("#clear").show();
 
-    if (workload) {
+    if (category) {
 
-        var index = workloads.indexOf(workload);
+        var index = categories.indexOf(category);
         if (index > -1) {
-            workloads.splice(index, 1);
-            if (workloads.length == 0) {
+            categories.splice(index, 1);
+            if (categories.length == 0) {
                 $("#clear").hide();
             }
         } else {
-            workloads.push(workload);
+            categories.push(category);
         }
     }
 
@@ -106,13 +106,13 @@ function workloadCheckBoxChange(workload) {
 function appDropDownLoad() {
 
     var params = {};
-    params.workloads = workloads;
+    params.categories = categories;
 
     if ($("#appDrop option:selected").val()) {
         var preApp = $("#appDrop option:selected").val();
     }
 
-    $.getJSON("/appsByWorkload", $.param(params, true), function(data) {
+    $.getJSON("/appsByCategory", $.param(params, true), function(data) {
 
         var html = '<option value="" selected="true" disabled="disabled">-- App --</option>';
         var len = data.length;
@@ -135,10 +135,10 @@ function appDropDownLoad() {
 }
 
 
-function appChange(isWorkloadChange) {
+function appChange(isCategoryChange) {
 
     var params = {};
-    params.workloads = workloads;
+    params.categories = categories;
 
 
     addToStore('runTypes', runTypes);
@@ -166,7 +166,7 @@ function appChange(isWorkloadChange) {
             typeVal = data[0];
             $("#typeCheckBox").hide();
         }
-        runTypeCheckBoxChange(isWorkloadChange);
+        runTypeCheckBoxChange(isCategoryChange);
         var html = '';
         var previousRunTypes = getFromStore('runTypes');
         var isAnyChecked = false;
@@ -189,7 +189,7 @@ function appChange(isWorkloadChange) {
         $('#typeCheckBox').append(html);
 
         if (isAnyChecked && flag == 1) {
-            runTypeCheckBoxChange(isWorkloadChange);
+            runTypeCheckBoxChange(isCategoryChange);
         }
 
     });
@@ -200,7 +200,7 @@ function appChange(isWorkloadChange) {
 }
 
 
-function runTypeCheckBoxChange(isWorkloadChange) {
+function runTypeCheckBoxChange(isCategoryChange) {
 
     $('#checkbox').empty();
     $('#footnote').hide();
@@ -220,7 +220,7 @@ function runTypeCheckBoxChange(isWorkloadChange) {
 
     var params = {};
     params.runTypes = runTypes;
-    params.workloads = workloads;
+    params.categories = categories;
     if (runTypes.length >= 1) {
         $("#checkbox").show();
         $("#clear").show();
@@ -269,7 +269,7 @@ function runTypeCheckBoxChange(isWorkloadChange) {
 
             $('#checkbox').append(html);
 
-            if (isWorkloadChange) {
+            if (isCategoryChange) {
                 checkBoxChange();
             } else {
                 selectedItems.forEach(item => checkBoxChange(item))
