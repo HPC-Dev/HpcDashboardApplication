@@ -8,16 +8,18 @@ show tables;
 select * from average_result where segment="hpc";
 
 
-select * from heat_map where segment is null;
+select * from average_result where segment is null;
 
-select * from results;
+select * from results where app_name like "%spec%" and category="hpc";
+
+update average_result set category="spec" where app_name like "%spec_jbb%";
 
 select * from heat_map where segment is not null and cpu_sku="7763_48C";
 
 
 select * from average_result;
 
-select * from app_category;
+select * from app_category where category="virt";
 
 
 

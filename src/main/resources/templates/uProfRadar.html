@@ -15,6 +15,11 @@
     <link th:rel="icon" th:href="@{assets/favicon.ico}"/>
     <link th:rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
 
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+
+
+
     <title>uProf Radar</title>
     <style>
 
@@ -83,6 +88,8 @@
 
     </div>
 
+
+
     <div class="row"  style="margin-top:20px">
 
 
@@ -114,12 +121,32 @@
 
     </div>
 
+
+    <div class="row" style="margin-top:12px">
+
+
+
+        <div class="col-sm-2" id="slider1" style="margin-left:9px" >
+            <input type="text" id="slider_id1" name="slider1" value="" />
         </div>
 
-<!--<br>-->
+        <div class="col-sm-2" id="slider2" style="margin-left:12px">
+            <input type="text" id="slider_id2" name="slider2" value="" />
+        </div>
+        <div class="col-sm-2" id="slider3" style="margin-left:14px">
+            <input type="text" id="slider_id3" name="slider3" value="" />
+        </div>
+        <div class="col-sm-2" id="slider4" style="margin-left:19px">
+            <input type="text" id="slider_id4" name="slider4" value="" />
+        </div>
+
+    </div>
+
+
 
 <div class="row">
     <div class="col-sm-2" >
+
     </div>
 
     <div id="uProfRadar">
@@ -141,7 +168,19 @@
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.min.js}"></script>
 <script type="text/javascript" th:src="@{assets/chartjs/Chart.bundle.js}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
 <script type="text/javascript" th:src="@{assets/custom/uProfRadar.js}"></script>
+
+<script>
+
+
+
+
+</script>
+
+
 
 </body>
 </html>
