@@ -232,8 +232,6 @@ public class uProfController {
             listLengths.add(list4.size());
         }
 
-
-
         return listLengths;
     }
 
