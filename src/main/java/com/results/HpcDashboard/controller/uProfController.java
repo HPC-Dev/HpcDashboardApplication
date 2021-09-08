@@ -202,8 +202,9 @@ public class uProfController {
 
 
     @GetMapping("/uProfSliders")
-    public List<Integer> getuProfSliders(String[] cpuList, String[] typeList) {
-        List<Integer> listLengths = new ArrayList<>();
+    public Map<String,Integer> getuProfSliders(String[] cpuList, String[] typeList, String[] cpuFlag) {
+        Map<String,Integer>  listLengths = new LinkedHashMap<>();
+
         String cpu1 = cpuList[0];
         String type1 = typeList[0];
         String cpu2 = null;
@@ -214,22 +215,26 @@ public class uProfController {
         String type4 = null;
 
         List<UProfRaw> list1 = uProfRawRepo.findUProf_Raw(cpu1,type1);
-        listLengths.add(list1.size());
+        listLengths.put(cpuFlag[0],list1.size());
+
         List<UProfRaw> list2;
         List<UProfRaw> list3;
         List<UProfRaw> list4;
         if (cpuList.length > 1 && typeList.length > 1) {
             list2 = uProfRawRepo.findUProf_Raw(cpuList[1],typeList[1]);
-            listLengths.add(list2.size());
+            listLengths.put(cpuFlag[1],list2.size());
+
         }
 
         if (cpuList.length > 2 && typeList.length > 2) {
             list3 = uProfRawRepo.findUProf_Raw(cpuList[2],typeList[2]);
-            listLengths.add(list3.size());
+            listLengths.put(cpuFlag[2],list3.size());
+
         }
         if (cpuList.length > 3 && typeList.length > 3) {
             list4 = uProfRawRepo.findUProf_Raw(cpuList[3],typeList[3]);
-            listLengths.add(list4.size());
+            listLengths.put(cpuFlag[3],list4.size());
+
         }
 
         return listLengths;
@@ -426,7 +431,7 @@ public class uProfController {
 
 
     @GetMapping("/uProfRadarChartSlider")
-    public UProfOutput getuProfDataSlider(String[] cpuList, String[] typeList, String  sliderList) {
+    public UProfOutput getuProfDataSlider(String[] cpuList, String[] typeList, String  sliderList, String[] cpuFlag) {
 
 
         Map<String,List<Integer>> sliderMap = sliderMap(sliderList);
@@ -449,7 +454,7 @@ public class uProfController {
 
         List<UProfRaw> list1 = uProfRawRepo.findUProf_Raw(cpu1,type1);
         bmsList.add(list1.get(0).getProcAppBm());
-        List<Integer> slide1 = sliderMap.getOrDefault("One",new ArrayList<>());
+        List<Integer> slide1 = sliderMap.getOrDefault(cpuFlag[0],new ArrayList<>());
 
 
         List<UProfRaw> list1_reduced = list1.subList(slide1.get(0),slideMax(list1,slide1));
@@ -460,7 +465,7 @@ public class uProfController {
             type2 = typeList[1];
             list2 = uProfRawRepo.findUProf_Raw(cpu2,type2);
             bmsList.add(list2.get(0).getProcAppBm());
-            List<Integer> slide2 = sliderMap.getOrDefault("Two",new ArrayList<>());
+            List<Integer> slide2 = sliderMap.getOrDefault(cpuFlag[1],new ArrayList<>());
 
             List<UProfRaw> list2_reduced = list2.subList(slide2.get(0),slideMax(list2,slide2));
             uProfCalculated.add(uProfCalculatedValues(list2_reduced));
@@ -471,7 +476,7 @@ public class uProfController {
             type3 = typeList[2];
             list3 = uProfRawRepo.findUProf_Raw(cpu3,type3);
             bmsList.add(list3.get(0).getProcAppBm());
-            List<Integer> slide3 = sliderMap.getOrDefault("Three",new ArrayList<>());
+            List<Integer> slide3 = sliderMap.getOrDefault(cpuFlag[2],new ArrayList<>());
 
             List<UProfRaw> list3_reduced = list3.subList(slide3.get(0),slideMax(list3,slide3));
             uProfCalculated.add(uProfCalculatedValues(list3_reduced));
@@ -481,7 +486,7 @@ public class uProfController {
             type4 = typeList[3];
             list4 = uProfRawRepo.findUProf_Raw(cpu4,type4);
             bmsList.add(list4.get(0).getProcAppBm());
-            List<Integer> slide4 = sliderMap.getOrDefault("Four",new ArrayList<>());
+            List<Integer> slide4 = sliderMap.getOrDefault(cpuFlag[3],new ArrayList<>());
 
             List<UProfRaw> list4_reduced = list4.subList(slide4.get(0),slideMax(list4,slide4));
             uProfCalculated.add(uProfCalculatedValues(list4_reduced));
