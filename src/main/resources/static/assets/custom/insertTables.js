@@ -26,7 +26,7 @@ function getData() {
 
     $.getJSON("/helper/userList/", function(data) {
 
-            var columnNames = ['First Name', 'Last Name',  'Email', 'Roles'];
+            var columnNames = ['First Name', 'Last Name',  'Email', 'Roles', 'Verified', 'Approved'];
             updateTableUsers(columnNames, data);
         });
 

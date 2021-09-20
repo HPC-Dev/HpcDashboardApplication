@@ -97,6 +97,8 @@ public class HelperRestController {
                     role += ", "+ r.getName().substring(5);
             }
             map.put("Roles",role);
+            map.put("Verified", String.valueOf(user.isEnabled()));
+            map.put("Approved", String.valueOf(user.isApproved()));
 
             userMap.add(map);
 

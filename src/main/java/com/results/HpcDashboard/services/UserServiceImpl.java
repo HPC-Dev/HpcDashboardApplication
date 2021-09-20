@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService {
     private void sendApprovalEmail(User user, String siteURL)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = "sai.kovouri@amd.com, ashok.manikonda@amd.com,anre.kashyap@amd.com,kevin.mayo@amd.com";
+        //String toAddress = "sai.kovouri@amd.com";
         String fromAddress = "hpcdashboard@outlook.com";
         String senderName = "HPC Dashboard";
         String subject = "Please approve the new user";
@@ -186,16 +187,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public boolean approve(String approvalCode , String siteURL) throws UnsupportedEncodingException, MessagingException {
+    public int approve(String approvalCode , String siteURL) throws UnsupportedEncodingException, MessagingException {
         User user = userRepository.findByApprovalCode(approvalCode);
 
-        if (user == null || user.isApproved()) {
-            return false;
-        } else {
+        if (user == null ) {
+            return 0;
+        }else if( user.isApproved()){
+
+            return 1;
+        }
+        else  {
             user.setApproved(true);
             sendApprovedEmail(user, siteURL);
             userRepository.save(user);
-            return true;
+            return 2;
         }
 
     }

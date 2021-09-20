@@ -75,10 +75,15 @@ public class UserRegistrationController {
 
     @GetMapping("/approve")
     public String approveUser(@Param("code") String code, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
-        if (userServiceImpl.approve(code, getSiteURL(request))) {
+        int val = userServiceImpl.approve(code, getSiteURL(request));
+
+        if (val == 2) {
             return "approval_success";
-        } else {
+        } else if(val ==0){
             return "approval_fail";
+        }
+        else {
+            return "approved";
         }
     }
 }
