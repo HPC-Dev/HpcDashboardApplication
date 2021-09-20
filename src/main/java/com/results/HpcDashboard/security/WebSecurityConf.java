@@ -57,6 +57,7 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                         "/user/**",
                         "/chart/**",
                         "/register**",
+                        "/register/**",
                         "/res/**",
                         "/cpuJson/**",
                         "/cpusGen/**",

@@ -25,6 +25,15 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(name = "approval_code", length = 56)
+    private String approvalCode;
+
+    private boolean enabled;
+
+    private boolean approved;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -42,7 +51,7 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
- }
+    }
 
     public User(String userName, String firstName, String lastName, String email, String password, Collection<Role> roles) {
         this.userName = userName;
@@ -51,6 +60,10 @@ public class User {
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 
 }

@@ -17,7 +17,7 @@ update average_result set category="spec" where app_name like "%spec_jbb%";
 select * from heat_map where segment is not null and cpu_sku="7763_48C";
 
 
-select * from average_result;
+delete from heat_map where segment is null;
 
 select * from app_category where category="virt";
 
@@ -30,15 +30,32 @@ select * from app_category where category="virt";
 -- drop table heat_map;
 
 
+update heat_map set isv="Ansys" where app_name="lsdyna";
+update app_category set isv="Ansys" where app_name="ls-dyna";
 
 
+select * from user;
+
+update user set approved=1;
+
+update user set enabled=0 where user_name="user";
+
+
+
+select * from users_roles;
+select * from role;
+
+delete from users_roles where user_id=365;
+delete from user where id=364;
 
 select *  from uprof_raw;
 
 select *  from uprof_reference;
 
-select * from uprof_calculated;
+select * from uprof_calculated where proc_app_bm="7713_mechanical_V21cg-100" ;
 
+
+select count(*) from uprof_raw WHERE proc_app_bm="7713_mechanical_V21cg-100" and run_type="latest";
 
 
 -- drop table uprof_raw;
@@ -204,7 +221,7 @@ select * from users_roles;
 update role set name="ROLE_TEAM" where id=11;
 
 
-#insert into users_roles (user_id,role_id) values (17,7),(18,7),(19,7);
+#insert into users_roles (user_id,role_id) values (366,7);
 
 
 #update users_roles set role_id=2 where user_id=5 and role_id=6;

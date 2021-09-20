@@ -40,4 +40,20 @@ public class UserRegistrationDto {
     @Email(message = "Please provide a valid e-mail")
     @NotEmpty(message = "Please confirm e-mail")
     private String confirmEmail;
+
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(name = "approval_code", length = 56)
+    private String approvalCode;
+
+    private boolean enabled;
+
+    private boolean approved;
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+
 }
